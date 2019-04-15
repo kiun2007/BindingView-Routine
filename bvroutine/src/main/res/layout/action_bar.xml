@@ -1,0 +1,80 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <import type="android.view.View"/>
+        <variable name="barItem" type="kiun.com.bvroutine.views.viewmodel.ActionBarItem" />
+    </data>
+    <LinearLayout
+        android:id="@+id/mainLinear"
+        android:orientation="vertical"
+        android:background="#00F"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <kiun.com.bvroutine.views.layout.StatusLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </kiun.com.bvroutine.views.layout.StatusLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+            <LinearLayout
+                android:onClick="@{()-> barItem.handler.onBackClick(context, 100)}"
+                android:visibility="@{barItem.barNoBack?View.GONE:View.VISIBLE}"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/backImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="5dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/svg_left_arrow" />
+                <TextView
+                    android:id="@+id/leftTitleTextView"
+                    android:textSize="16sp"
+                    android:textColor="#FFF"
+                    android:layout_gravity="center"
+                    android:layout_centerVertical="true"
+                    android:text="@{barItem.backTitle}"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@={barItem.title}"
+                android:textColor="#FFF"
+                android:textSize="19sp" />
+            <LinearLayout
+                android:id="@+id/rightButtonLL"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:visibility="visible"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/rightTitleTextView"
+                    android:textSize="16sp"
+                    android:textColor="#FFF"
+                    android:layout_gravity="center"
+                    android:text=""
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:id="@+id/rightImageView"
+                    android:layout_width="30dp"
+                    android:layout_gravity="center"
+                    android:layout_height="30dp"
+                    android:scaleType="centerInside"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</layout>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <declare-styleable name="NavigatorBar">
+        <attr name="barTitle" format="string"/>
+        <attr name="barNoback" format="boolean"/>
+        <attr name="barStyle" format="enum">
+            <enum name="normalBar" value="0"/>
+            <enum name="transparentBar" value="1"/>
+            <enum name="transparentBlack" value="2"/>
+        </attr>
+        <attr name="barLeftTitle" format="string"/>
+        <attr name="barRightImage" format="reference"/>
+        <attr name="barRightTitle" format="string"/>
+        <attr name="barLeftImage" format="reference"/>
+        <attr name="titleImage" format="reference"/>
+    </declare-styleable>
+</resources>
