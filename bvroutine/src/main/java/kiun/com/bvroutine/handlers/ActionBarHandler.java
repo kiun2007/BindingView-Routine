@@ -1,5 +1,6 @@
 package kiun.com.bvroutine.handlers;
 
+import android.app.Activity;
 import android.content.Context;
 
 import kiun.com.bvroutine.base.BaseHandler;
@@ -26,9 +27,13 @@ public class ActionBarHandler extends BaseHandler {
      */
     public static final int TAG_RIGHTIMAGE_ITEM = 103;
 
-    public void onBackClick(Context context, int tag){
+    @Override
+    public void onClick(Context context, int tag, Object data) {
         switch (tag){
             case TAG_BACKBOTTON_ITEM:{
+                if (context instanceof Activity){
+                    ((Activity) context).finish();
+                }
                 break;
             }
             case TAG_RIGHTBUTTON_ITEM:{

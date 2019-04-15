@@ -25,6 +25,8 @@ import java.util.regex.Pattern;
 
 public class MCString {
 
+    public static String FORMAT_DATE = "yyyy-mm-ss HH:mm:ss";
+
     public static List listByArray(JSONArray array, String fieldName) {
 
         List newList = new ArrayList();
@@ -109,6 +111,11 @@ public class MCString {
     public static String formatDate(String format, Date date) {
         SimpleDateFormat formatter = new SimpleDateFormat(format, Locale.CHINA);
         return formatter.format(date);
+    }
+
+    public static String formatDate(String format, long time){
+        SimpleDateFormat formatter = new SimpleDateFormat(format, Locale.CHINA);
+        return formatter.format(new Date(time));
     }
 
     public static String bankCardTail(String cardNo) {

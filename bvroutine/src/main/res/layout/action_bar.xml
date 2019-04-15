@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="45dp">
             <LinearLayout
-                android:onClick="@{()-> barItem.handler.onBackClick(context, 100)}"
+                android:onClick="@{()-> barItem.handler.onClick(context, 100, null)}"
                 android:visibility="@{barItem.barNoBack?View.GONE:View.VISIBLE}"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent">

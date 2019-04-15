@@ -1,6 +1,9 @@
 package kiun.com.bindingdemo.bean;
 
-public class PblmBean{
+import android.os.Parcel;
+
+import kiun.com.bvroutine.data.BaseBean;
+public class PblmBean extends BaseBean {
 
     /**
      * cwsCode : null
@@ -85,6 +88,47 @@ public class PblmBean{
     private String nm;
     private String srcDesc;
     private String code;
+
+    protected PblmBean(Parcel in) {
+        pblmsTypeId = in.readString();
+        regid = in.readString();
+        commonFileIds = in.readString();
+        pblmsId = in.readString();
+        pblmId = in.readString();
+        objId = in.readString();
+        objType = in.readString();
+        inspPblmType = in.readString();
+        inspPblmCode = in.readString();
+        inspPblmName = in.readString();
+        inspPblmDesc = in.readString();
+        pblmLong = in.readDouble();
+        pblmLat = in.readDouble();
+        ifCasePblm = in.readString();
+        inspPblmCate = in.readString();
+        pblmStat = in.readString();
+        dataStat = in.readString();
+        collTime = in.readLong();
+        recPers = in.readString();
+        villType = in.readString();
+        persName = in.readString();
+        inspPblmsName = in.readString();
+        checkPoint = in.readString();
+        nm = in.readString();
+        srcDesc = in.readString();
+        code = in.readString();
+    }
+
+    public static final Creator<PblmBean> CREATOR = new Creator<PblmBean>() {
+        @Override
+        public PblmBean createFromParcel(Parcel in) {
+            return new PblmBean(in);
+        }
+
+        @Override
+        public PblmBean[] newArray(int size) {
+            return new PblmBean[size];
+        }
+    };
 
     public String getPblmsTypeId() {
         return pblmsTypeId;
@@ -292,5 +336,40 @@ public class PblmBean{
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(pblmsTypeId);
+        dest.writeString(regid);
+        dest.writeString(commonFileIds);
+        dest.writeString(pblmsId);
+        dest.writeString(pblmId);
+        dest.writeString(objId);
+        dest.writeString(objType);
+        dest.writeString(inspPblmType);
+        dest.writeString(inspPblmCode);
+        dest.writeString(inspPblmName);
+        dest.writeString(inspPblmDesc);
+        dest.writeDouble(pblmLong);
+        dest.writeDouble(pblmLat);
+        dest.writeString(ifCasePblm);
+        dest.writeString(inspPblmCate);
+        dest.writeString(pblmStat);
+        dest.writeString(dataStat);
+        dest.writeLong(collTime);
+        dest.writeString(recPers);
+        dest.writeString(villType);
+        dest.writeString(persName);
+        dest.writeString(inspPblmsName);
+        dest.writeString(checkPoint);
+        dest.writeString(nm);
+        dest.writeString(srcDesc);
+        dest.writeString(code);
     }
 }

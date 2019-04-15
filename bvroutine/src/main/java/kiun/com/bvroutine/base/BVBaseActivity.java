@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import kiun.com.bvroutine.R;
+import kiun.com.bvroutine.data.BaseBean;
 import kiun.com.bvroutine.utils.StatusBarUtils;
 import kiun.com.bvroutine.views.NavigatorBar;
 import kiun.com.bvroutine.views.viewmodel.ActionBarItem;
@@ -20,6 +21,7 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
 
     protected T mViewBinding = null;
     private ActionBarItem barItem = null;
+    NavigatorBar barView;
 
     public boolean isWithActionBar(){
         return true;
@@ -30,7 +32,7 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
     public abstract void initView();
 
     private void create(){
-        NavigatorBar barView;
+
         if(isWithActionBar()){
             setContentView(R.layout.activiy_base);
             mViewBinding = DataBindingUtil.inflate(LayoutInflater.from(this), getViewId(), findViewById(R.id.view_content), true);
@@ -54,6 +56,10 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
         create();
     }
 
+    protected <B extends BaseBean> B getExtra(){
+        return getIntent().getParcelableExtra("EXTRA");
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
@@ -62,5 +68,11 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
 
     public ActionBarItem getBarItem() {
         return barItem;
+    }
+
+    public void setBarItem(ActionBarItem barItem){
+        if (barView != null){
+            barView.setBarItem(barItem);
+        }
     }
 }

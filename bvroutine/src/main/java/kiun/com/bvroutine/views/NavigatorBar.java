@@ -36,6 +36,7 @@ public class NavigatorBar extends LinearLayout {
     private TextView rightTextView;
     private LinearLayout rightButton;
     private ActionBarItem barItem = new ActionBarItem();
+    ActionBarBinding dataBinding;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public NavigatorBar(Context context) {
@@ -50,7 +51,7 @@ public class NavigatorBar extends LinearLayout {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public NavigatorBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        ActionBarBinding dataBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.action_bar, this, true);
+        dataBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.action_bar, this, true);
         dataBinding.setBarItem(barItem);
 
         leftButton = findViewById(R.id.backImageView);
@@ -113,5 +114,10 @@ public class NavigatorBar extends LinearLayout {
 
     public ActionBarItem getBarItem() {
         return barItem;
+    }
+
+    public void setBarItem(ActionBarItem barItem){
+        this.barItem = barItem;
+        dataBinding.setBarItem(barItem);
     }
 }

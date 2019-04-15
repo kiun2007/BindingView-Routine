@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <import type="kiun.com.bvroutine.utils.MCString"/>
+        <import type="java.util.Date"/>
+        <variable name="item" type="kiun.com.bindingdemo.bean.PblmBean" />
+    </data>
+    <LinearLayout
+        android:id="@+id/fragment_content"
+        android:orientation="vertical"
+        android:background="#FFF"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:text="@{item.inspPblmName}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="@{item.checkPoint}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="@{MCString.formatDate(MCString.FORMAT_DATE, item.collTime)}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</layout>

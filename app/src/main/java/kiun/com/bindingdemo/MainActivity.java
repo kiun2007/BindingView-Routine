@@ -7,9 +7,9 @@ import kiun.com.bindingdemo.bean.PblmListReqBean;
 import kiun.com.bindingdemo.databinding.ActivityMainBinding;
 import kiun.com.bindingdemo.services.SupervisionListServices;
 import kiun.com.bindingdemo.warp.ServiceGenerator;
-import kiun.com.bvroutine.base.BaseHandler;
 import kiun.com.bvroutine.base.RequestBVActivity;
 import kiun.com.bvroutine.data.PagerBean;
+import kiun.com.bvroutine.handlers.ActivityHandler;
 import kiun.com.bvroutine.interfaces.presenter.ListViewPresenter;
 import kiun.com.bvroutine.interfaces.presenter.RequestBindingPresenter;
 import kiun.com.bvroutine.interfaces.view.ListRequestView;
@@ -28,10 +28,11 @@ public class MainActivity extends RequestBVActivity<ActivityMainBinding> impleme
     @Override
     public void initView() {
         getBarItem().setTitle("测试标题1");
+        getBarItem().setBarNoBack(true);
         RequestBindingPresenter p = getRequestPresenter();
         listViewPresenter = new RecyclerListPresenter(mViewBinding.mainRecyclerView, mViewBinding.mainRefresh);
         listViewPresenter.initRequest(pblmListReqBean, this);
-        listViewPresenter.start(new BaseHandler(BR.handler), R.layout.item_pblm, BR.item, p);
+        listViewPresenter.start(new ActivityHandler(BR.handler, ItemActivity.class), R.layout.item_pblm, BR.item, p);
     }
 
     @Override
