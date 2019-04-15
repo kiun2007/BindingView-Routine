@@ -1,26 +1,21 @@
 package kiun.com.bindingdemo.bean;
 
+import android.databinding.ObservableField;
+
 import kiun.com.bvroutine.data.PagerBean;
+
 
 public class PblmListReqBean extends PagerBean {
 
-    private String inspPblmName;
-    private String villType;
+    public ObservableField<String> inspPblmName = new ObservableField<>();
+    public ObservableField<String> villType = new ObservableField<>();
 
-
-    public String getInspPblmName() {
-        return inspPblmName;
-    }
-
-    public void setInspPblmName(String inspPblmName) {
-        this.inspPblmName = inspPblmName;
-    }
-
-    public String getVillType() {
-        return villType;
-    }
-
-    public void setVillType(String villType) {
-        this.villType = villType;
-    }
+//
+//    public String getInspPblmName() {
+//        return inspPblmName.get();
+//    }
+//
+//    public String getVillType() {
+//        return villType.get();
+//    }
 }

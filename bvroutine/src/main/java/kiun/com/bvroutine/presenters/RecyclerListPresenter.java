@@ -60,6 +60,13 @@ public class RecyclerListPresenter<T> extends RecyclerView.OnScrollListener impl
         presenter.addRequest(()->mRequestView.requestPager(mPagerBean), this::onDataComplete);
     }
 
+    @Override
+    public void reload() {
+        loadAdapter.clear();
+        mPagerBean.setPageNum(1);
+        presenter.addRequest(()->mRequestView.requestPager(mPagerBean), this::onDataComplete);
+    }
+
     private void onDataComplete(List<T> v){
         loadAdapter.add(v);
         mRefreshLayout.setRefreshing(false);
@@ -67,7 +74,6 @@ public class RecyclerListPresenter<T> extends RecyclerView.OnScrollListener impl
 
     @Override
     public void onRefresh() {
-        loadAdapter.clear();
-        presenter.addRequest(()->mRequestView.requestPager(mPagerBean), this::onDataComplete);
+        reload();
     }
 }

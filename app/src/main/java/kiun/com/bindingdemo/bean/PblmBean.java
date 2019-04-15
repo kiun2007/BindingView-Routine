@@ -3,6 +3,8 @@ package kiun.com.bindingdemo.bean;
 import android.os.Parcel;
 
 import kiun.com.bvroutine.data.BaseBean;
+
+
 public class PblmBean extends BaseBean {
 
     /**

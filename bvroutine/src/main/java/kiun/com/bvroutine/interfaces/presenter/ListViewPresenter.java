@@ -11,4 +11,6 @@ public interface ListViewPresenter<T>{
     void start(BaseHandler<T> hanlder, int itemLayout, int dataBr, RequestBindingPresenter p);
 
     void loadMore();
+
+    void reload();
 }

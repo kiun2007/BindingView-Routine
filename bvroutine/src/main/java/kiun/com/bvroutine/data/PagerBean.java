@@ -1,6 +1,6 @@
 package kiun.com.bvroutine.data;
 
-public class PagerBean{
+public class PagerBean extends QueryBean{
     private int pageNum = 1;
     private int pageSize = 20;
     private int pages = -1;

@@ -33,6 +33,8 @@ public class MainActivity extends RequestBVActivity<ActivityMainBinding> impleme
         listViewPresenter = new RecyclerListPresenter(mViewBinding.mainRecyclerView, mViewBinding.mainRefresh);
         listViewPresenter.initRequest(pblmListReqBean, this);
         listViewPresenter.start(new ActivityHandler(BR.handler, ItemActivity.class), R.layout.item_pblm, BR.item, p);
+        mViewBinding.setListViewPresenter(listViewPresenter);
+        mViewBinding.setReqBean(pblmListReqBean);
     }
 
     @Override
@@ -47,6 +49,6 @@ public class MainActivity extends RequestBVActivity<ActivityMainBinding> impleme
 
     @Override
     public List<PblmBean> requestPager(PagerBean bean) {
-        return getRequestPresenter().callServiceList(SupervisionListServices.class, s->s.pblmPageList(new PblmListReqBean()), bean);
+        return getRequestPresenter().callServiceList(SupervisionListServices.class, s->s.pblmPageList(pblmListReqBean), bean);
     }
 }
