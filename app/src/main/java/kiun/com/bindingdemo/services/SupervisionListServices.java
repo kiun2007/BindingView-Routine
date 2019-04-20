@@ -1,7 +1,7 @@
 package kiun.com.bindingdemo.services;
 
 import kiun.com.bindingdemo.bean.PblmBean;
-import kiun.com.bindingdemo.bean.PblmListReqBean;
+import kiun.com.bindingdemo.bean.request.PblmListReqBean;
 import kiun.com.bindingdemo.warp.Constants;
 import kiun.com.bindingdemo.warp.NetConstants;
 import kiun.com.bindingdemo.warp.NetListBeanWrapper;

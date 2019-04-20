@@ -14,4 +14,15 @@ public interface LoadAdapter<T> {
      * 清除所有数据.
      */
     void clear();
+
+    /**
+     * 获取所有数据.
+     * @return 获取数据列表.
+     */
+    List<T> getAll();
+
+    /**
+     * 通知数据更新.
+     */
+    void notifySet();
 }

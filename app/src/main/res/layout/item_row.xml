@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <import type="android.view.View"/>
+        <variable name="item" type="Object" />
+        <variable name="handler" type="kiun.com.bvroutine.base.BaseHandler"/>
+        <variable name="treeHandler" type="kiun.com.bvroutine.views.adapter.StepTreeAdapter.TreeHandler"/>
+    </data>
+    <LinearLayout
+        android:id="@+id/fragment_content"
+        android:orientation="vertical"
+        android:background="#FFF"
+        android:onClick="@{()->treeHandler.onClick(context, 0, null)}"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:paddingLeft="40dp"
+            android:text="@{item.toString()}"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</layout>

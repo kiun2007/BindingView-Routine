@@ -4,25 +4,26 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-
 import java.util.List;
 import kiun.com.bvroutine.base.BaseHandler;
+import kiun.com.bvroutine.base.BaseRecyclerAdapter;
 import kiun.com.bvroutine.data.PagerBean;
+import kiun.com.bvroutine.data.QueryBean;
 import kiun.com.bvroutine.interfaces.presenter.ListViewPresenter;
 import kiun.com.bvroutine.interfaces.presenter.RequestBindingPresenter;
 import kiun.com.bvroutine.interfaces.view.ListRequestView;
 import kiun.com.bvroutine.interfaces.view.LoadAdapter;
 import kiun.com.bvroutine.views.adapter.RecyclerSimpleAdapter;
 
-public class RecyclerListPresenter<T> extends RecyclerView.OnScrollListener implements ListViewPresenter<T>, SwipeRefreshLayout.OnRefreshListener {
+public class RecyclerListPresenter<T,Q extends QueryBean,Req extends ListRequestView>
+        extends RecyclerView.OnScrollListener implements ListViewPresenter<T,Q,Req>, SwipeRefreshLayout.OnRefreshListener {
 
-    RecyclerView mRecyclerView;
-    SwipeRefreshLayout mRefreshLayout;
-    ListRequestView mRequestView;
-    PagerBean mPagerBean;
-    RequestBindingPresenter presenter;
-    LoadAdapter loadAdapter;
+    protected RecyclerView mRecyclerView;
+    protected SwipeRefreshLayout mRefreshLayout;
+    protected Req mRequestView;
+    protected Q rootRequest;
+    protected RequestBindingPresenter presenter;
+    protected LoadAdapter loadAdapter;
 
     public RecyclerListPresenter(RecyclerView recyclerView, SwipeRefreshLayout refreshLayout){
         mRecyclerView = recyclerView;
@@ -31,43 +32,47 @@ public class RecyclerListPresenter<T> extends RecyclerView.OnScrollListener impl
     }
 
     @Override
-    public PagerBean initRequest(PagerBean pagerBean, ListRequestView requestView) {
+    public Q initRequest(Q request, Req requestView) {
         mRequestView = requestView;
-        mPagerBean = pagerBean;
+        rootRequest = request;
 
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(requestView.getContext()));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        return request;
+    }
 
-        return pagerBean;
+    protected BaseRecyclerAdapter getRecyclerAdapter(int itemLayout, int dataBr, BaseHandler<T> hanlder){
+        return new RecyclerSimpleAdapter(this, itemLayout, dataBr, hanlder);
     }
 
     @Override
     public void start(BaseHandler<T> hanlder, int itemLayout, int dataBr, RequestBindingPresenter p) {
         presenter = p;
-        RecyclerSimpleAdapter adapter = new RecyclerSimpleAdapter(this, itemLayout, dataBr, hanlder);
-        loadAdapter = adapter;
-
-        mRecyclerView.setAdapter(adapter);
-        presenter.addRequest(()->mRequestView.requestPager(mPagerBean), this::onDataComplete);
+        mRecyclerView.setAdapter((BaseRecyclerAdapter) (loadAdapter = getRecyclerAdapter(itemLayout, dataBr, hanlder)));
+        reload();
     }
 
     @Override
     public void loadMore() {
-        if (mPagerBean.getPageNum() < mPagerBean.getPages()){
-            mPagerBean.setPageNum(mPagerBean.getPageNum() + 1);
+        if(rootRequest instanceof PagerBean){
+            if (((PagerBean) rootRequest).getPageNum() < ((PagerBean) rootRequest).getPages()){
+                ((PagerBean) rootRequest).setPageNum(((PagerBean) rootRequest).getPageNum() + 1);
+            }
         }
-        presenter.addRequest(()->mRequestView.requestPager(mPagerBean), this::onDataComplete);
+        presenter.addRequest(()->mRequestView.requestPager(presenter, rootRequest), this::onDataComplete);
     }
 
     @Override
     public void reload() {
         loadAdapter.clear();
-        mPagerBean.setPageNum(1);
-        presenter.addRequest(()->mRequestView.requestPager(mPagerBean), this::onDataComplete);
+        if(rootRequest instanceof PagerBean) {
+            ((PagerBean) rootRequest).setPageNum(1);
+        }
+        presenter.addRequest(()->mRequestView.requestPager(presenter, rootRequest), this::onDataComplete);
     }
 
-    private void onDataComplete(List<T> v){
+    protected void onDataComplete(List<T> v){
         loadAdapter.add(v);
         mRefreshLayout.setRefreshing(false);
     }

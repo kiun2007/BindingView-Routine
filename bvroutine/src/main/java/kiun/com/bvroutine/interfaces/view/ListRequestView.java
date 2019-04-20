@@ -2,7 +2,8 @@ package kiun.com.bvroutine.interfaces.view;
 
 import java.util.List;
 import kiun.com.bvroutine.data.PagerBean;
+import kiun.com.bvroutine.interfaces.presenter.RequestBindingPresenter;
 
-public interface ListRequestView<T> extends BaseView{
-    List<T> requestPager(PagerBean bean);
+public interface ListRequestView<Q> extends BaseView{
+    List requestPager(RequestBindingPresenter p, Q bean);
 }

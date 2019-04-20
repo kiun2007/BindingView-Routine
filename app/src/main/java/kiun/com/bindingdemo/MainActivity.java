@@ -1,9 +1,11 @@
 package kiun.com.bindingdemo;
 
 import android.content.Context;
+import android.content.Intent;
+
 import java.util.List;
 import kiun.com.bindingdemo.bean.PblmBean;
-import kiun.com.bindingdemo.bean.PblmListReqBean;
+import kiun.com.bindingdemo.bean.request.PblmListReqBean;
 import kiun.com.bindingdemo.databinding.ActivityMainBinding;
 import kiun.com.bindingdemo.services.SupervisionListServices;
 import kiun.com.bindingdemo.warp.ServiceGenerator;
@@ -15,7 +17,7 @@ import kiun.com.bvroutine.interfaces.presenter.RequestBindingPresenter;
 import kiun.com.bvroutine.interfaces.view.ListRequestView;
 import kiun.com.bvroutine.presenters.RecyclerListPresenter;
 
-public class MainActivity extends RequestBVActivity<ActivityMainBinding> implements ListRequestView<PblmBean> {
+public class MainActivity extends RequestBVActivity<ActivityMainBinding> implements ListRequestView<PagerBean> {
 
     ListViewPresenter listViewPresenter = null;
     PblmListReqBean pblmListReqBean = new PblmListReqBean();
@@ -29,12 +31,15 @@ public class MainActivity extends RequestBVActivity<ActivityMainBinding> impleme
     public void initView() {
         getBarItem().setTitle("测试标题1");
         getBarItem().setBarNoBack(true);
-        RequestBindingPresenter p = getRequestPresenter();
         listViewPresenter = new RecyclerListPresenter(mViewBinding.mainRecyclerView, mViewBinding.mainRefresh);
+
         listViewPresenter.initRequest(pblmListReqBean, this);
-        listViewPresenter.start(new ActivityHandler(BR.handler, ItemActivity.class), R.layout.item_pblm, BR.item, p);
+        listViewPresenter.start(new ActivityHandler(BR.handler, ItemActivity.class), R.layout.item_pblm, BR.item, getRequestPresenter());
         mViewBinding.setListViewPresenter(listViewPresenter);
         mViewBinding.setReqBean(pblmListReqBean);
+
+        Intent intent = new Intent(this,ItemActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -48,7 +53,7 @@ public class MainActivity extends RequestBVActivity<ActivityMainBinding> impleme
     }
 
     @Override
-    public List<PblmBean> requestPager(PagerBean bean) {
-        return getRequestPresenter().callServiceList(SupervisionListServices.class, s->s.pblmPageList(pblmListReqBean), bean);
+    public List requestPager(RequestBindingPresenter p, PagerBean bean) {
+        return p.callServiceList(SupervisionListServices.class, s->s.pblmPageList(pblmListReqBean), bean);
     }
 }

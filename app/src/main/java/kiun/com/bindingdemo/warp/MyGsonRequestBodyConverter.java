@@ -61,7 +61,6 @@ private static final MediaType MEDIA_TYPE = MediaType.parse("application/json; c
             adapter.write(jsonWriter, value);
             jsonWriter.close();
         }
-
         return RequestBody.create(MEDIA_TYPE, buffer.readByteString());
     }
 }

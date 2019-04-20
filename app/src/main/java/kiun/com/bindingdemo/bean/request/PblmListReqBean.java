@@ -1,4 +1,4 @@
-package kiun.com.bindingdemo.bean;
+package kiun.com.bindingdemo.bean.request;
 
 import android.databinding.ObservableField;
 
@@ -9,13 +9,4 @@ public class PblmListReqBean extends PagerBean {
 
     public ObservableField<String> inspPblmName = new ObservableField<>();
     public ObservableField<String> villType = new ObservableField<>();
-
-//
-//    public String getInspPblmName() {
-//        return inspPblmName.get();
-//    }
-//
-//    public String getVillType() {
-//        return villType.get();
-//    }
 }

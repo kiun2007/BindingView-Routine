@@ -21,22 +21,18 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONTokener;
-
 import java.io.IOException;
 import java.io.StringReader;
-
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
 
 final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
     private final Gson gson;
     private final TypeAdapter<T> adapter;
-
-    private String TAG=GsonResponseBodyConverter.class.getSimpleName();
+    private String TAG = GsonResponseBodyConverter.class.getSimpleName();
 
     GsonResponseBodyConverter(Gson gson, TypeAdapter<T> adapter) {
         this.gson = gson;
@@ -48,31 +44,8 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
 
         try {
             //TODO：此处将接口返回的json字符串进行反序列化为对象，按需改造
-            /** 接口返回结构如下
-             {
-             "code": "",
-             "msg": "",
-             "total": "",
-             "rows": []
-             }
-             ** 需改造的结构如下
-             {
-             "code": "",
-             "msg": "",
-             "data":
-             {
-             "list":[]
-             }
-             }
-             */
             JsonObject jsonValue = (JsonObject) new JsonParser().parse(value.string());
-
             JsonObject jsonRtValue = new JsonObject();
-//            String strCode = jsonValue.get("code").getAsString();
-//            String strMsg = jsonValue.get("msg").getAsString();
-////            String strTotal = jsonValue.get("total").getAsString();//total暂时无用
-//            jsonRtValue.addProperty("code",strCode);
-//            jsonRtValue.addProperty("msg",strMsg);
             jsonRtValue.addProperty(Constants.CODE, Constants.SUCCESS);
             jsonRtValue.addProperty(Constants.MSG, Constants.BLANK);
 
@@ -80,9 +53,6 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
             if (jsonValue.get(Constants.CODE) != null) {
 
                 //存在code，为第二种接口标准
-//                JsonReader jsonReader = gson.newJsonReader(value.charStream());
-//                return adapter.read(jsonReader);
-
                 if (jsonValue.get(Constants.DATA) == null || jsonValue.get(Constants.DATA).toString().equals("null")) {
                     JsonReader jsonReader = gson.newJsonReader(new StringReader(jsonValue.toString()));
                     return adapter.read(jsonReader);
@@ -101,9 +71,6 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
                         jsData.add(Constants.LIST, jsonValue.get(Constants.DATA));
                     } else {
                         jsData = jsonValue.get(Constants.DATA).getAsJsonObject();
-
-//                    JsonObject jsObj =
-//                    jsonRtValue.add(Constants.DATA, jsObj);
                     }
                     jsonRtValue.add(Constants.DATA, jsData);
                     /**
@@ -135,13 +102,8 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
                         if (jsonValue.get(Constants.DATA) != null) {
                             //data 是json对象
                             try {
-//                                String jsStr = jsonValue.get(Constants.DATA).toString();
-//                                JsonObject jsObj = new JsonObject();
-//                                jsObj.addProperty("id", jsStr);
-
                                 JsonObject jsObj = jsonValue.get(Constants.DATA).getAsJsonObject();
                                 jsonRtValue.add(Constants.DATA, jsObj);
-//                                jsonRtValue.add(Constants.DATA, jsObj);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -155,7 +117,6 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
                         //表示json数组
                         JsonArray jsRows = jsonValue.get(Constants.ROW).getAsJsonArray();
                         JsonObject jsonData = new JsonObject();
-//                jsonData.addProperty("total",strTotal);//total暂时无用
                         jsonData.add(Constants.LIST, jsRows);
                         jsonRtValue.add(Constants.DATA, jsonData);
                     } else if (jsonValue.get(Constants.ROW).isJsonObject()) {
