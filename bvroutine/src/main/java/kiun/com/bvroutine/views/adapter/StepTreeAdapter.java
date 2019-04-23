@@ -16,7 +16,6 @@ import kiun.com.bvroutine.base.BindingHolder;
 import kiun.com.bvroutine.data.viewmodel.TreeNode;
 import kiun.com.bvroutine.data.viewmodel.TreeViewNode;
 import kiun.com.bvroutine.interfaces.view.LoadAdapter;
-import kiun.com.bvroutine.interfaces.view.TreeLoadAdapter;
 import kiun.com.bvroutine.interfaces.view.TreeStepView;
 import kiun.com.bvroutine.presenters.StepTreePresenter;
 
