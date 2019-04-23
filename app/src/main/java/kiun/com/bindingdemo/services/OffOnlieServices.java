@@ -1,8 +1,13 @@
 package kiun.com.bindingdemo.services;
 
+import kiun.com.bindingdemo.bean.AdXReqBase;
+import kiun.com.bindingdemo.bean.EngIdBase;
+import kiun.com.bindingdemo.bean.QueryListBase;
+import kiun.com.bindingdemo.bean.QueryTCListLastBase;
 import kiun.com.bindingdemo.bean.RsvrRgstrBean;
 import kiun.com.bindingdemo.bean.RsvrRgstrReqBean;
 import kiun.com.bindingdemo.warp.Constants;
+import kiun.com.bindingdemo.warp.NetBeanWrapper;
 import kiun.com.bindingdemo.warp.NetConstants;
 import kiun.com.bindingdemo.warp.NetListBeanWrapper;
 import kiun.com.bvroutine.data.QueryBean;
@@ -28,21 +33,22 @@ public interface OffOnlieServices {
     @Headers({NetConstants.URL_NAME + Constants.COLON + NetConstants.URL_NAME_EMERGENCY})
     @POST("dc/insp/rsvrRgstr/list/type")
     Call<NetListBeanWrapper<RsvrRgstrBean>> rsvrRgstrList(@Body QueryBean<RsvrRgstrReqBean> rsvrRgstrReqBean);
+
+    // 获取engId
+    @Headers({NetConstants.URL_NAME + Constants.COLON + NetConstants.URL_NAME_EMERGENCY})
+    @POST("dc/insp/villRgstr/getEngId")
+    Call<NetBeanWrapper<EngIdBase>> getEngId(@Query("objId") String objId);
+
+    // 获取行政村列表
+    @Headers({NetConstants.URL_NAME + Constants.COLON + NetConstants.URL_NAME_EMERGENCY})
+    @POST("dc/att/adXBase/queryTCListLast")
+    Call<NetListBeanWrapper<QueryTCListLastBase>> querTCList(@Body QueryBean<RsvrRgstrBean> adXReqBase);
 //
-//    // 获取engId
-//    @Headers({NetConstants.URL_NAME + Constants.COLON + NetConstants.URL_NAME_EMERGENCY})
-//    @POST("dc/insp/villRgstr/getEngId")
-//    Call<NetBeanWrapper<EngIdBase>> getEngId(@Query("objId") String objId);
-//
-//    // 获取行政村列表
-//    @Headers({NetConstants.URL_NAME + Constants.COLON + NetConstants.URL_NAME_EMERGENCY})
-//    @POST("dc/att/adXBase/queryTCListLast")
-//    Call<NetListBeanWrapper<QueryTCListLastBase>> querTCList(@Body AdXReqBase adXReqBase);
-//
-//    // 获取饮水工程列表
-//    @Headers({NetConstants.URL_NAME + Constants.COLON + NetConstants.URL_NAME_EMERGENCY})
-//    @POST("dc/att/cwsBase/queryListByObjId")
-//    Call<NetListBeanWrapper<QueryListBase>> queryListByObjId(@Body AdXReqBase adXReqBase);
+    // 获取饮水工程列表
+    @Headers({NetConstants.URL_NAME + Constants.COLON + NetConstants.URL_NAME_EMERGENCY})
+    @POST("dc/att/cwsBase/queryListByObjId")
+    Call<NetListBeanWrapper<QueryListBase>> queryListByObjId(@Body QueryBean<AdXReqBase> adXReqBase);
+
 //    // 获取饮水工程列表
 //    @Headers({NetConstants.URL_NAME + Constants.COLON + NetConstants.URL_NAME_EMERGENCY})
 //    @POST("dc/insp/proSourceProtect/queryListByObjId")

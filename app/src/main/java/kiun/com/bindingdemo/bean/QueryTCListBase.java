@@ -31,6 +31,11 @@ public class QueryTCListBase implements Parcelable {
     private String guid;
     private String engId;
 
+    @Override
+    public String toString() {
+        return villageName;
+    }
+
     protected QueryTCListBase(Parcel in) {
         villageName = in.readString();
         villageCode = in.readString();

@@ -22,6 +22,12 @@ android {
         enabled true
     }
 
+    repositories {
+        maven {
+            url "http://maven.aliyun.com/nexus/content/repositories/releases"
+        }
+    }
+
     compileOptions {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
@@ -37,7 +43,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation "com.squareup.okhttp3:okhttp:3.4.1"
     implementation "com.squareup.retrofit2:retrofit:2.1.0"
-    compile "com.google.code.gson:gson:2.7"
+    implementation "com.google.code.gson:gson:2.7"
 
     implementation project(':bvroutine')
+
+    implementation 'com.aliyun.ams:alicloud-android-hotfix:3.2.8'
 }

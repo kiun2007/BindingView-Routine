@@ -2,21 +2,54 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <import type="android.view.View"/>
+        <import type="kiun.com.bvroutine.views.adapter.StepTreeAdapter.TreeHandler"/>
         <variable name="item" type="Object" />
         <variable name="handler" type="kiun.com.bvroutine.base.BaseHandler"/>
         <variable name="treeHandler" type="kiun.com.bvroutine.views.adapter.StepTreeAdapter.TreeHandler"/>
     </data>
-    <LinearLayout
+
+    <RelativeLayout
         android:id="@+id/fragment_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
+        android:padding="5dp"
         android:background="#FFF"
-        android:onClick="@{()->treeHandler.onClick(context, 0, null)}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/left_icon"
+            android:visibility="@{treeHandler.treeNode.withChildren()?View.VISIBLE:View.INVISIBLE}"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_width="25dp"
+            android:layout_height="25dp">
+            <ImageView
+                android:visibility="@{treeHandler.treeNode.loading?View.GONE:View.VISIBLE}"
+                android:src="@{treeHandler.treeNode.expansion?@drawable/svg_remove:@drawable/svg_add}"
+                android:onClick="@{()->treeHandler.onClick(context, 0, null)}"
+                android:layout_margin="3dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            <ProgressBar
+                android:indeterminateTint="#3699FF"
+                android:visibility="@{treeHandler.treeNode.loading?View.VISIBLE:View.GONE}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
         <TextView
-            android:paddingLeft="40dp"
+            android:layout_toRightOf="@+id/left_icon"
+            android:layout_toLeftOf="@+id/right_checkbox"
+            android:layout_centerVertical="true"
             android:text="@{item.toString()}"
+            android:textSize="18sp"
+            android:textColor="#212121"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/right_checkbox"
+            android:layout_alignParentRight="true"
+            android:src="@{treeHandler.treeNode.status()==0?@drawable/svg_unselected:treeHandler.treeNode.status()==1?@drawable/svg_bland:@drawable/svg_selected}"
+            android:onClick="@{()->treeHandler.onClick(context, 1, null)}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
 </layout>

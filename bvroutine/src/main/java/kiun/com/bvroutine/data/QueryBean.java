@@ -21,7 +21,7 @@ public class QueryBean<T> {
     public QueryBean(){
     }
 
-    private String presId = "82C66BD251437F29E0530DC3010ACF31";
+    private String presId = "ee5c759f97a24cedb646a3c9d5e5eca9";
 
     public String getPresId() {
         return presId;

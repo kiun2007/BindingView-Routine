@@ -15,7 +15,7 @@ import kiun.com.bvroutine.interfaces.view.ListRequestView;
 import kiun.com.bvroutine.interfaces.view.LoadAdapter;
 import kiun.com.bvroutine.views.adapter.RecyclerSimpleAdapter;
 
-public class RecyclerListPresenter<T,Q extends QueryBean,Req extends ListRequestView>
+public class RecyclerListPresenter<T,Q extends QueryBean,Req extends ListRequestView,ADA extends LoadAdapter>
         extends RecyclerView.OnScrollListener implements ListViewPresenter<T,Q,Req>, SwipeRefreshLayout.OnRefreshListener {
 
     protected RecyclerView mRecyclerView;
@@ -23,7 +23,7 @@ public class RecyclerListPresenter<T,Q extends QueryBean,Req extends ListRequest
     protected Req mRequestView;
     protected Q rootRequest;
     protected RequestBindingPresenter presenter;
-    protected LoadAdapter loadAdapter;
+    protected ADA loadAdapter;
 
     public RecyclerListPresenter(RecyclerView recyclerView, SwipeRefreshLayout refreshLayout){
         mRecyclerView = recyclerView;
@@ -49,7 +49,7 @@ public class RecyclerListPresenter<T,Q extends QueryBean,Req extends ListRequest
     @Override
     public void start(BaseHandler<T> hanlder, int itemLayout, int dataBr, RequestBindingPresenter p) {
         presenter = p;
-        mRecyclerView.setAdapter((BaseRecyclerAdapter) (loadAdapter = getRecyclerAdapter(itemLayout, dataBr, hanlder)));
+        mRecyclerView.setAdapter((BaseRecyclerAdapter) (loadAdapter = (ADA) getRecyclerAdapter(itemLayout, dataBr, hanlder)));
         reload();
     }
 

@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sky on 2019/3/21.
@@ -15,7 +16,12 @@ public class QueryTCListLastBase implements Parcelable {
     private String townFullName;
     private String status;
     private String guid;
-    private ArrayList<QueryTCListBase> list;
+    private List<QueryTCListBase> list;
+
+    public QueryTCListLastBase(String townName, String townCode){
+        this.townCode = townCode;
+        this.townName = townName;
+    }
 
     protected QueryTCListLastBase(Parcel in) {
         townCode = in.readString();
@@ -23,7 +29,11 @@ public class QueryTCListLastBase implements Parcelable {
         townFullName = in.readString();
         status = in.readString();
         guid = in.readString();
+    }
 
+    @Override
+    public String toString() {
+        return townName;
     }
 
     public static final Creator<QueryTCListLastBase> CREATOR = new Creator<QueryTCListLastBase>() {
@@ -93,11 +103,11 @@ public class QueryTCListLastBase implements Parcelable {
         this.guid = guid;
     }
 
-    public ArrayList<QueryTCListBase> getList() {
+    public List<QueryTCListBase> getList() {
         return list;
     }
 
-    public void setList(ArrayList<QueryTCListBase> list) {
+    public void setList(List<QueryTCListBase> list) {
         this.list = list;
     }
 }

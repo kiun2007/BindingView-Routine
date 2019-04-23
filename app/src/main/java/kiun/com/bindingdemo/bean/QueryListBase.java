@@ -51,6 +51,10 @@ public class QueryListBase implements Parcelable {
     private String status;
     private String engId;
 
+    @Override
+    public String toString() {
+        return cwsName;
+    }
 
     protected QueryListBase(Parcel in) {
         addvcd = in.readString();

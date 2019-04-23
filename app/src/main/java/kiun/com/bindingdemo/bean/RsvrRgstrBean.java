@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import kiun.com.bindingdemo.warp.NetListBeanWrapper;
+import kiun.com.bvroutine.interfaces.QueryParam;
 
 /**
  * Created by sky on 2019/3/21.
@@ -37,7 +38,9 @@ public class RsvrRgstrBean implements Parcelable {
 //            "cwsNum":0,
 //            "surNum":0
 //    }
+    @QueryParam("adCode")
     private String code;
+
     private String id;
     private String nm;
     private String ptype;
@@ -66,6 +69,13 @@ public class RsvrRgstrBean implements Parcelable {
     private NetListBeanWrapper.DataListWrapper<QueryListBase> queryListBase;
     private NetListBeanWrapper.DataListWrapper<ProSourceProtectBase> proSourceProtectBase;
 
+    public RsvrRgstrBean(){
+    }
+
+    public RsvrRgstrBean(String nm, String type){
+        this.nm = nm;
+        this.ptype = type;
+    }
 
     protected RsvrRgstrBean(Parcel in) {
         this.code = in.readString();

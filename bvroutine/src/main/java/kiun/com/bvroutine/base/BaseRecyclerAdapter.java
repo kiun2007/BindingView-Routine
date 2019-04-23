@@ -26,7 +26,7 @@ public abstract class BaseRecyclerAdapter<T, L extends ListViewPresenter> extend
     public void add(List<T> list) {
         if(list != null){
             listData.addAll(list);
-            notifyDataSetChanged();
+            notifySet();
         }
     }
 
