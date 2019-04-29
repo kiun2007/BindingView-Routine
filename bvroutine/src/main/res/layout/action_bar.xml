@@ -6,7 +6,7 @@
     <LinearLayout
         android:id="@+id/mainLinear"
         android:orientation="vertical"
-        android:background="#00F"
+        android:background="#3088EE"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <kiun.com.bvroutine.views.layout.StatusLayout
@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="45dp">
             <LinearLayout
-                android:onClick="@{()-> barItem.handler.onClick(context, 100, null)}"
+                android:onClick="@{()->barItem.handler.onClick(context,100,null)}"
                 android:visibility="@{barItem.barNoBack?View.GONE:View.VISIBLE}"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent">
@@ -54,6 +54,7 @@
                 android:id="@+id/rightButtonLL"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
+                android:onClick="@{()->barItem.handler.onClick(context,102,null)}"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:visibility="visible"
@@ -64,7 +65,7 @@
                     android:textSize="16sp"
                     android:textColor="#FFF"
                     android:layout_gravity="center"
-                    android:text=""
+                    android:text="@={barItem.rightItemTitle}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <ImageView

@@ -51,7 +51,6 @@ private static final MediaType MEDIA_TYPE = MediaType.parse("application/json; c
     public RequestBody convert(T value) throws IOException {
 
         Buffer buffer = new Buffer();
-
         if (value instanceof QueryBean){
             JSONObject jsonObject = ((QueryBean) value).getQuery();
             buffer.writeUtf8(jsonObject.toString());

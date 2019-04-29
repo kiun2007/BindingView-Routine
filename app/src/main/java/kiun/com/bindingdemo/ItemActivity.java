@@ -1,7 +1,12 @@
 package kiun.com.bindingdemo;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
+import android.view.View;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import kiun.com.bindingdemo.bean.AdXReqBase;
@@ -15,16 +20,21 @@ import kiun.com.bindingdemo.warp.ServiceGenerator;
 import kiun.com.bvroutine.base.BaseHandler;
 import kiun.com.bvroutine.base.RequestBVActivity;
 import kiun.com.bvroutine.data.PagerBean;
+import kiun.com.bvroutine.data.QueryBean;
 import kiun.com.bvroutine.data.viewmodel.TreeNode;
 import kiun.com.bvroutine.data.viewmodel.TreeViewNode;
+import kiun.com.bvroutine.interfaces.presenter.DialogPresenter;
 import kiun.com.bvroutine.interfaces.presenter.ListViewPresenter;
 import kiun.com.bvroutine.interfaces.presenter.RequestBindingPresenter;
 import kiun.com.bvroutine.interfaces.view.TreeStepView;
+import kiun.com.bvroutine.presenters.ProgressDialogPresenter;
 import kiun.com.bvroutine.presenters.StepTreePresenter;
 
 public class ItemActivity extends RequestBVActivity<ActivityItemBinding> implements TreeStepView {
 
-    ListViewPresenter listViewPresenter = null;
+    ListViewPresenter<TreeNode,?,TreeStepView> listViewPresenter = null;
+    DialogPresenter dialogPresenter = null;
+
     @Override
     public int getViewId() {
         return R.layout.activity_item;
@@ -33,14 +43,48 @@ public class ItemActivity extends RequestBVActivity<ActivityItemBinding> impleme
     @Override
     public void initView() {
 
-        listViewPresenter = new StepTreePresenter(mViewBinding.mainRecyclerView, mViewBinding.mainRefresh, BR.treeHandler);
+        listViewPresenter = new StepTreePresenter(mViewBinding.mainRecyclerView, mViewBinding.mainRefresh, BR.treeHandler,R.layout.item_error);
         listViewPresenter.initRequest(null, this);
         listViewPresenter.start(new BaseHandler(BR.handler), R.layout.item_plan, BR.item, getRequestPresenter());
+
+        dialogPresenter = new ProgressDialogPresenter(this);
+        dialogPresenter.configDialog("下载提示", R.mipmap.ic_launcher, 100, ProgressDialog.STYLE_HORIZONTAL, false);
+        QueryBean.setBaseGuid("ee5c759f97a24cedb646a3c9d5e5eca9");
     }
 
     @Override
     public <T> T createService(Class<T> serviceClass) {
         return ServiceGenerator.createService(serviceClass);
+    }
+
+    int index = 1;
+    public void onClick(View view){
+        dialogPresenter.showMessage("开始下载", 100, 5);
+
+        new Handler(){
+            @Override
+            public void dispatchMessage(Message msg) {
+                dialogPresenter.showMessage("开始下载", 100, index++);
+            }
+        }.sendEmptyMessageDelayed(0, 1000);
+        new Handler(){
+            @Override
+            public void dispatchMessage(Message msg) {
+                dialogPresenter.showMessage("开始下载", 100, index++);
+            }
+        }.sendEmptyMessageDelayed(0, 2000);
+        new Handler(){
+            @Override
+            public void dispatchMessage(Message msg) {
+                dialogPresenter.showMessage("开始下载", 100, index++);
+            }
+        }.sendEmptyMessageDelayed(0, 3000);
+        new Handler(){
+            @Override
+            public void dispatchMessage(Message msg) {
+                dialogPresenter.hide();
+            }
+        }.sendEmptyMessageDelayed(0, 5000);
     }
 
     @Override
@@ -63,6 +107,16 @@ public class ItemActivity extends RequestBVActivity<ActivityItemBinding> impleme
             return new TreeViewNode(R.layout.item_row, children);
         }
         return null;
+    }
+
+    @Override
+    public void onCheckChanged(StepTreePresenter p) {
+
+    }
+
+    @Override
+    public void onLoadMore(StepTreePresenter p) {
+
     }
 
     @Override
@@ -114,5 +168,13 @@ public class ItemActivity extends RequestBVActivity<ActivityItemBinding> impleme
             return ((QueryTCListLastBase) bean.getExtra()).getList();
         }
         return null;
+    }
+
+    @Override
+    public void loadComplete(ListViewPresenter<TreeNode, ?, ?> p) {
+
+        int[] statusCount = p.filterCount(item->true, item->item.status() == TreeNode.STATUS_ON);
+
+        int a = 0;
     }
 }

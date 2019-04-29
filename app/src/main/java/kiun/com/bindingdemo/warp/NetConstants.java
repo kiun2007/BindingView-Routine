@@ -16,10 +16,12 @@ public class NetConstants {
     //调试环境
     public final static String API_APP_BASE_URL_TEST = "http://10.1.3.215/";//内网ip
 
-    //生产环境
+    //生产环境 http://10.1.102.136:8101/
     public final static String API_APP_BASE_URL_SECOND = "http://sv.goldenwater.com.cn/";//外网 主URL
 
-    //public final static String API_APP_BASE_URL_SECOND = "http://192.168.1.162:7001/";//外网 主URL
+//    public final static String API_APP_BASE_URL_SECOND = "http://10.1.102.136:8101/";//外网 主URL
+
+//    public final static String API_APP_BASE_URL_SECOND = "http://192.168.1.162:7001/";//外网 主URL
     public final static String API_APP_FILE_URL = API_APP_BASE_URL_SECOND;
     public final static String API_H5_BASE_URL = API_APP_BASE_URL_SECOND;
 

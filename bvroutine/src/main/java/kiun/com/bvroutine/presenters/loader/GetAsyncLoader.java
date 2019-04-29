@@ -79,7 +79,12 @@ public class GetAsyncLoader<T> extends AsyncTaskLoader<T> {
 
     @Override
     public T loadInBackground() {
-        return asyncCaller.call();
+        try{
+            return asyncCaller.call();
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     public SetCaller<T> getCallback() {

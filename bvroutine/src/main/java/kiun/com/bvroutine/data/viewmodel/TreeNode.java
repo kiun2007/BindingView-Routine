@@ -40,6 +40,11 @@ public class TreeNode {
     //附带数据.
     private Object extra;
 
+    /**
+     * 在父节点的索引.
+     */
+    private int indexOfParent = 0;
+
     //分页信息.
     private PagerBean pager;
 
@@ -48,6 +53,10 @@ public class TreeNode {
             return -1;
         }
         return treeNodes.indexOf(this);
+    }
+
+    public int indexOfParent() {
+        return indexOfParent;
     }
 
     /**
@@ -88,6 +97,23 @@ public class TreeNode {
 
     public TreeNode getParent() {
         return parent;
+    }
+
+    /**
+     * 向上选多少级.
+     * @param upLevel
+     * @return
+     */
+    public TreeNode getParent(int upLevel){
+
+        int level = 1;
+        for (TreeNode parentTree = parent; parentTree != null; parentTree = parentTree.getParent()){
+            if (level == upLevel){
+                return parentTree;
+            }
+            level++;
+        }
+        return null;
     }
 
     public boolean isParentExpansion(){
@@ -238,22 +264,36 @@ public class TreeNode {
         for (Object item : datas){
             TreeNode treeNode = new TreeNode(root,this, viewLayoutId, item);
             treeNode.setChildCount(children ? 0 : -1);
-
+            treeNode.indexOfParent = childCount;
             childCount ++;
             list.add(treeNode);
+
             //父节点也要增加个数.
             forParent(parentTree -> parentTree.childCount++);
         }
         return list;
     }
 
+    public static List<TreeNode> addToRoot(List<TreeNode> root,int viewLayoutId, List datas){
+        return insertTo(root, null, viewLayoutId, datas, true);
+    }
+
     public static List<TreeNode> insertTo(List<TreeNode> root, TreeNode parent, int viewLayoutId, List datas, boolean children){
 
-        int insertIndex = root.indexOf(parent);
-        insertIndex =  parent.childCount() + insertIndex + 1;
-        List<TreeNode> nodes = parent.addNode(root, datas, viewLayoutId, children);
-        root.addAll(insertIndex, nodes);
-
-        return nodes;
+        if (parent != null){
+            int insertIndex = root.indexOf(parent);
+            insertIndex =  parent.childCount() + insertIndex + 1;
+            List<TreeNode> nodes = parent.addNode(root, datas, viewLayoutId, children);
+            root.addAll(insertIndex, nodes);
+            return nodes;
+        }else{
+            List<TreeNode> rootNodes = new LinkedList<>();
+            for (Object item:datas) {
+                TreeNode itemNode = new TreeNode(root, viewLayoutId, item);
+                itemNode.indexOfParent = root.size();
+                rootNodes.add(itemNode);
+            }
+            return rootNodes;
+        }
     }
 }

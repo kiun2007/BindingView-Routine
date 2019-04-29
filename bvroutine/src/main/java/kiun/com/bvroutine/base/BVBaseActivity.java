@@ -1,35 +1,37 @@
 package kiun.com.bvroutine.base;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
+import android.app.Activity;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
-
+import java.util.HashMap;
+import java.util.Map;
 import kiun.com.bvroutine.R;
 import kiun.com.bvroutine.data.BaseBean;
+import kiun.com.bvroutine.interfaces.callers.SetCaller;
+import kiun.com.bvroutine.interfaces.view.BindingView;
 import kiun.com.bvroutine.utils.StatusBarUtils;
 import kiun.com.bvroutine.views.NavigatorBar;
 import kiun.com.bvroutine.views.viewmodel.ActionBarItem;
 
-public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompatActivity {
+public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompatActivity implements BindingView {
 
     protected T mViewBinding = null;
     private ActionBarItem barItem = null;
+    private Map<Integer, SetCaller<Intent>> resultCallers = new HashMap<>();
     NavigatorBar barView;
+    int requestIdBase = 50;
 
     public boolean isWithActionBar(){
         return true;
     }
-
-    public abstract int getViewId();
-
-    public abstract void initView();
 
     private void create(){
 
@@ -50,6 +52,10 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
         initView();
     }
 
+    public NavigatorBar getBarView() {
+        return barView;
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +72,15 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
         create();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        SetCaller caller = resultCallers.remove(requestCode);
+        if (caller != null && resultCode == Activity.RESULT_OK){
+            caller.call(data);
+        }
+    }
+
     public ActionBarItem getBarItem() {
         return barItem;
     }
@@ -74,5 +89,32 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
         if (barView != null){
             barView.setBarItem(barItem);
         }
+    }
+
+    public void startForResult(Class clz, String key, Parcelable value, SetCaller<Intent> caller){
+        Intent intent = new Intent(this, clz);
+        if (value != null){
+            intent.putExtra(key, value);
+        }
+        startForResult(intent, caller);
+    }
+
+    public void startForResult(Intent intent, SetCaller<Intent> caller){
+        if (requestIdBase > 5000){
+            requestIdBase = 50;
+        }
+        int requestId = requestIdBase++;
+
+        resultCallers.put(requestId, caller);
+        startActivityForResult(intent, requestId);
+    }
+
+    public void startForResult(Class clz, SetCaller<Intent> caller){
+        startForResult(clz, null,null,caller);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 }

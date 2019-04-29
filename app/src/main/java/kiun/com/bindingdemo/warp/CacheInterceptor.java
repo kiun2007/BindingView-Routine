@@ -33,6 +33,12 @@ public class CacheInterceptor implements Interceptor {
                 .addHeader("persId", persId)//header添加新token
                 .build();
 
+//        try {
+//            Thread.sleep(5000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+
         Response response = null;
         //从request中获取headers，通过给定的键url_name
         List<String> headerValues = request.headers(NetConstants.URL_NAME);
@@ -51,6 +57,7 @@ public class CacheInterceptor implements Interceptor {
                 newBaseUrl = request.url();
             }
 
+
             //从request中获取原有的HttpUrl实例oldHttpUrl
             HttpUrl oldHttpUrl = request.url();
 
@@ -64,6 +71,9 @@ public class CacheInterceptor implements Interceptor {
 
             Request requestNew = request.newBuilder().url(newFullUrl).build();
 
+//            if (Math.random() > 0.5){
+//                throw new IOException("链接超时!");
+//            }
             response = chain.proceed(requestNew);
             MediaType mediaType = response.body().contentType();
             byte[] date = response.body().bytes();

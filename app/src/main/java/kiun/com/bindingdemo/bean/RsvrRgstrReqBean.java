@@ -45,6 +45,11 @@ public class RsvrRgstrReqBean{
         return String.format("%d", "rsvrvillrect".indexOf(prsnType)/4 + 1);
     }
 
+    @Override
+    public String toString() {
+        return prsnTitle;
+    }
+
     public void setpType(String pType) {
         this.pType = pType;
     }

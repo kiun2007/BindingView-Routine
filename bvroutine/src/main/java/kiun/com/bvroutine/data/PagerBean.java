@@ -8,6 +8,8 @@ public class PagerBean<T> extends QueryBean<T>{
 
     @IgnoreParam
     private int pages = -1;
+    @IgnoreParam
+    private int realPageNum = 1;
 
     public PagerBean(){
         super();
@@ -29,6 +31,10 @@ public class PagerBean<T> extends QueryBean<T>{
         return pageSize;
     }
 
+    public int realPageNum() {
+        return realPageNum;
+    }
+
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
     }
@@ -43,5 +49,21 @@ public class PagerBean<T> extends QueryBean<T>{
 
     public void addPage(){
         pageNum ++;
+    }
+
+    public void rollbackPage(){
+        pageNum --;
+    }
+
+    public void real(){
+        realPageNum = pageNum;
+    }
+
+    /**
+     * 界面全部加载完毕.
+     * @return 是否完毕.
+     */
+    public boolean isPageOver(){
+        return realPageNum >= pages;
     }
 }

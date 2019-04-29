@@ -4,11 +4,15 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
+import java.util.LinkedList;
 import java.util.List;
 import kiun.com.bvroutine.base.BaseHandler;
 import kiun.com.bvroutine.base.BaseRecyclerAdapter;
 import kiun.com.bvroutine.data.PagerBean;
 import kiun.com.bvroutine.data.QueryBean;
+import kiun.com.bvroutine.data.viewmodel.TreeNode;
+import kiun.com.bvroutine.interfaces.callers.CompareCaller;
 import kiun.com.bvroutine.interfaces.presenter.ListViewPresenter;
 import kiun.com.bvroutine.interfaces.presenter.RequestBindingPresenter;
 import kiun.com.bvroutine.interfaces.view.ListRequestView;
@@ -56,8 +60,10 @@ public class RecyclerListPresenter<T,Q extends QueryBean,Req extends ListRequest
     @Override
     public void loadMore() {
         if(rootRequest instanceof PagerBean){
-            if (((PagerBean) rootRequest).getPageNum() < ((PagerBean) rootRequest).getPages()){
-                ((PagerBean) rootRequest).setPageNum(((PagerBean) rootRequest).getPageNum() + 1);
+            if (!((PagerBean) rootRequest).isPageOver()){
+                ((PagerBean) rootRequest).addPage();
+            }else{
+                return;
             }
         }
         presenter.addRequest(()->mRequestView.requestPager(presenter, rootRequest), this::onDataComplete);
@@ -70,6 +76,72 @@ public class RecyclerListPresenter<T,Q extends QueryBean,Req extends ListRequest
             ((PagerBean) rootRequest).setPageNum(1);
         }
         presenter.addRequest(()->mRequestView.requestPager(presenter, rootRequest), this::onDataComplete);
+    }
+
+    @Override
+    public void notifySet() {
+        loadAdapter.notifySet();
+    }
+
+    @Override
+    public int[] filterCount(CompareCaller<T>... callers) {
+        return filterCount(false, callers);
+    }
+
+    @Override
+    public int[] filterCount(boolean repeat, CompareCaller<T>... callers) {
+
+        List<T> items = loadAdapter.getAll();
+        int[] rets = new int[callers.length];
+        for (int i = 0; i < rets.length; i++) rets[i] = 0;
+
+        for (T item : items) {
+            for (int i = 0; i < callers.length; i++) {
+                if (callers[i].call(item)){
+                    rets[i] ++;
+                    if (!repeat){
+                        break;
+                    }
+                }
+            }
+        }
+        return rets;
+    }
+
+    @Override
+    public List<T> filter(CompareCaller<T> caller) {
+        return filters(caller)[0];
+    }
+
+    @Override
+    public List<T>[] filters(CompareCaller<T>... callers) {
+        return filters(false, callers);
+    }
+
+    @Override
+    public List<T>[] filters(boolean repeat, CompareCaller<T>... callers) {
+        List<T> allItems = loadAdapter.getAll();
+        List<T>[] selectedItems = new List[callers.length];
+        for (int i = 0; i < selectedItems.length; i++) {
+            selectedItems[i] = new LinkedList<>();
+        }
+
+        for (T item : allItems) {
+            for (int i = 0; i < callers.length; i++) {
+                if (callers[i].call(item)){
+                    selectedItems[i].add(item);
+                    if (!repeat){
+                        break;
+                    }
+                }
+            }
+        }
+        return selectedItems;
+    }
+
+    @Override
+    public List<T> list() {
+        return loadAdapter.getAll();
     }
 
     protected void onDataComplete(List<T> v){

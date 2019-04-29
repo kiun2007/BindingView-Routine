@@ -14,20 +14,25 @@ public abstract class NavigationBaseActivity<T extends ViewDataBinding> extends 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        getNavigation();
         super.onCreate(savedInstanceState);
-        getNavigation().initNavigation(this, getFragmentManager());
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        getNavigation();
         super.onCreate(savedInstanceState, persistentState);
-        getNavigation().initNavigation(this, getFragmentManager());
     }
 
     protected NavigationPresenter getNavigation(){
         if (navigationPresenter == null){
             navigationPresenter = new NormalNavigationPresenter();
+            navigationPresenter.initNavigation(this, getSupportFragmentManager());
         }
         return navigationPresenter;
+    }
+
+    public void configAnimation(int enter, int exit, int popEnter, int popExit){
+        getNavigation().configAnimation(enter, exit, popEnter, popExit);
     }
 }

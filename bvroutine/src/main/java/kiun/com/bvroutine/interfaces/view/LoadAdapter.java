@@ -25,4 +25,9 @@ public interface LoadAdapter<T> {
      * 通知数据更新.
      */
     void notifySet();
+
+    /**
+     * 发生错误.
+     */
+    void error(String err);
 }

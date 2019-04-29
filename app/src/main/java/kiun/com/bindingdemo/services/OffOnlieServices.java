@@ -2,6 +2,7 @@ package kiun.com.bindingdemo.services;
 
 import kiun.com.bindingdemo.bean.AdXReqBase;
 import kiun.com.bindingdemo.bean.EngIdBase;
+import kiun.com.bindingdemo.bean.ProSourceProtectBase;
 import kiun.com.bindingdemo.bean.QueryListBase;
 import kiun.com.bindingdemo.bean.QueryTCListLastBase;
 import kiun.com.bindingdemo.bean.RsvrRgstrBean;
@@ -49,10 +50,10 @@ public interface OffOnlieServices {
     @POST("dc/att/cwsBase/queryListByObjId")
     Call<NetListBeanWrapper<QueryListBase>> queryListByObjId(@Body QueryBean<AdXReqBase> adXReqBase);
 
-//    // 获取饮水工程列表
-//    @Headers({NetConstants.URL_NAME + Constants.COLON + NetConstants.URL_NAME_EMERGENCY})
-//    @POST("dc/insp/proSourceProtect/queryListByObjId")
-//    Call<NetListBeanWrapper<ProSourceProtectBase>> proSourceProtect(@Body AdXReqBase adXReqBase);
+    // 获取饮水工程列表
+    @Headers({NetConstants.URL_NAME + Constants.COLON + NetConstants.URL_NAME_EMERGENCY})
+    @POST("dc/insp/proSourceProtect/queryListByObjId")
+    Call<NetListBeanWrapper<ProSourceProtectBase>> proSourceProtect(@Body AdXReqBase adXReqBase);
 //
 //    // 行政区域规划
 //    @Headers({NetConstants.URL_NAME + Constants.COLON + NetConstants.URL_NAME_EMERGENCY})

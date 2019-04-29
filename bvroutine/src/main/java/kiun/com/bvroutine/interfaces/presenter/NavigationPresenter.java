@@ -1,7 +1,7 @@
 package kiun.com.bvroutine.interfaces.presenter;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
+import android.support.v4.app.FragmentManager;
+import kiun.com.bvroutine.base.BVBaseFragment;
 import kiun.com.bvroutine.data.BaseBean;
 import kiun.com.bvroutine.interfaces.view.NavigationView;
 
@@ -18,6 +18,12 @@ public interface NavigationPresenter {
     void initNavigation(NavigationView view, FragmentManager fragmentManager);
 
     /**
+     * 设置根Fragment.
+     * @param clz
+     * @param value
+     */
+    void setRoot(Class<? extends BVBaseFragment> clz, BaseBean value);
+    /**
      * 返回上个界面.
      */
     void backNavi();
@@ -25,7 +31,7 @@ public interface NavigationPresenter {
     /**
      * 返回上个界面.
      */
-    void backNavi(Class<Fragment> clz);
+    void backNavi(Class<? extends BVBaseFragment> clz);
 
     /**
      * 返回第一个界面.
@@ -36,11 +42,18 @@ public interface NavigationPresenter {
      * 跳到指定的界面.
      * @param clz 页面类.
      */
-    void gotoNavi(Class<Fragment> clz, BaseBean value);
+    void gotoNavi(Class<? extends BVBaseFragment> clz, BaseBean value);
 
     /**
      * 跳转到下一个页面.
      * @param value
      */
     void next(BaseBean value);
+
+    /**
+     * 配置动画.
+     * @param enter
+     * @param exit
+     */
+    void configAnimation(int enter, int exit, int popEnter, int popExit);
 }

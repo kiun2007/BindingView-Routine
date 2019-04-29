@@ -9,6 +9,7 @@ public class ActionBarItem{
     public ObservableField<String> title = new ObservableField<>();
     public ObservableField<Boolean> barNoBack = new ObservableField<>();
     public ObservableField<String> backTitle = new ObservableField<>();
+    public ObservableField<String> rightItemTitle = new ObservableField<>();
     private ActionBarHandler handler = null;
 
     public void setBarNoBack(boolean barNoBack) {
@@ -21,6 +22,10 @@ public class ActionBarItem{
 
     public void setBackTitle(String title){
         backTitle.set(title);
+    }
+
+    public void setRightTitle(String rightTitle) {
+        this.rightItemTitle.set(rightTitle);
     }
 
     public ActionBarHandler getHandler() {

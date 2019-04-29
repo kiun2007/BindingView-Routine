@@ -56,4 +56,9 @@ public class MainActivity extends RequestBVActivity<ActivityMainBinding> impleme
     public List requestPager(RequestBindingPresenter p, PagerBean bean) {
         return p.callServiceList(SupervisionListServices.class, s->s.pblmPageList(pblmListReqBean), bean);
     }
+
+    @Override
+    public void loadComplete(ListViewPresenter<PagerBean, ?, ?> p) {
+
+    }
 }

@@ -11,6 +11,8 @@ public abstract class BaseRecyclerAdapter<T, L extends ListViewPresenter> extend
 
     protected int mLayoutId;
     protected int mDataBr;
+    protected boolean isError = false;
+    protected String errorContent = null;
     protected BaseHandler mHandler;
     protected List<T> listData = new LinkedList();
     protected L listViewPresenter;
@@ -24,10 +26,17 @@ public abstract class BaseRecyclerAdapter<T, L extends ListViewPresenter> extend
 
     @Override
     public void add(List<T> list) {
+        isError = false;
         if(list != null){
             listData.addAll(list);
             notifySet();
         }
+    }
+
+    @Override
+    public void error(String err) {
+        errorContent = err;
+        isError = true;
     }
 
     @Override

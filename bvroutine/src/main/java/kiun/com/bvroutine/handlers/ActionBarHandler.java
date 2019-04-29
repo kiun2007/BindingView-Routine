@@ -10,7 +10,7 @@ public class ActionBarHandler extends BaseHandler {
     /**
      * 返回导航按钮.
      */
-    public static final int TAG_BACKBOTTON_ITEM = 100;
+    public static final int TAG_BACK_BUTTON_ITEM = 100;
 
     /**
      * 标题.
@@ -30,7 +30,7 @@ public class ActionBarHandler extends BaseHandler {
     @Override
     public void onClick(Context context, int tag, Object data) {
         switch (tag){
-            case TAG_BACKBOTTON_ITEM:{
+            case TAG_BACK_BUTTON_ITEM:{
                 if (context instanceof Activity){
                     ((Activity) context).finish();
                 }

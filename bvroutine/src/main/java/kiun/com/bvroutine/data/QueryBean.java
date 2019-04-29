@@ -16,12 +16,19 @@ import kiun.com.bvroutine.interfaces.QueryParam;
 
 public class QueryBean<T> {
 
+    private static String baseGuid = null;
+
+    public static void setBaseGuid(String guid){
+        baseGuid = guid;
+    }
+
     private T extra;
 
     public QueryBean(){
+        presId = baseGuid;
     }
 
-    private String presId = "ee5c759f97a24cedb646a3c9d5e5eca9";
+    private String presId = null;
 
     public String getPresId() {
         return presId;
@@ -32,6 +39,7 @@ public class QueryBean<T> {
     }
 
     public QueryBean(T extra){
+        this();
         this.extra = extra;
     }
 
@@ -79,7 +87,9 @@ public class QueryBean<T> {
                 putValueToJSON(json, extra, Object.class.getSimpleName());
             }
             putValueToJSON(json, this, QueryBean.class.getSimpleName());
-            json.put("presId", presId);
+            if (presId != null){
+                json.put("presId", presId);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
