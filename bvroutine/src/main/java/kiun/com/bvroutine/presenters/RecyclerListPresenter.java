@@ -4,19 +4,19 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
 import java.util.LinkedList;
 import java.util.List;
-import kiun.com.bvroutine.base.BaseHandler;
 import kiun.com.bvroutine.base.BaseRecyclerAdapter;
 import kiun.com.bvroutine.data.PagerBean;
 import kiun.com.bvroutine.data.QueryBean;
-import kiun.com.bvroutine.data.viewmodel.TreeNode;
+import kiun.com.bvroutine.handlers.ListHandler;
 import kiun.com.bvroutine.interfaces.callers.CompareCaller;
+import kiun.com.bvroutine.interfaces.presenter.ExceptionCatcher;
 import kiun.com.bvroutine.interfaces.presenter.ListViewPresenter;
 import kiun.com.bvroutine.interfaces.presenter.RequestBindingPresenter;
 import kiun.com.bvroutine.interfaces.view.ListRequestView;
 import kiun.com.bvroutine.interfaces.view.LoadAdapter;
+import kiun.com.bvroutine.utils.ListUtil;
 import kiun.com.bvroutine.views.adapter.RecyclerSimpleAdapter;
 
 public class RecyclerListPresenter<T,Q extends QueryBean,Req extends ListRequestView,ADA extends LoadAdapter>
@@ -28,6 +28,8 @@ public class RecyclerListPresenter<T,Q extends QueryBean,Req extends ListRequest
     protected Q rootRequest;
     protected RequestBindingPresenter presenter;
     protected ADA loadAdapter;
+    protected ExceptionCatcher catcher;
+    int errLayout = 0;
 
     public RecyclerListPresenter(RecyclerView recyclerView, SwipeRefreshLayout refreshLayout){
         mRecyclerView = recyclerView;
@@ -46,14 +48,16 @@ public class RecyclerListPresenter<T,Q extends QueryBean,Req extends ListRequest
         return request;
     }
 
-    protected BaseRecyclerAdapter getRecyclerAdapter(int itemLayout, int dataBr, BaseHandler<T> hanlder){
-        return new RecyclerSimpleAdapter(this, itemLayout, dataBr, hanlder);
+    protected BaseRecyclerAdapter getRecyclerAdapter(int itemLayout, int dataBr, ListHandler<T> hanlder){
+        return new RecyclerSimpleAdapter(this, itemLayout, errLayout, dataBr, hanlder);
     }
 
     @Override
-    public void start(BaseHandler<T> hanlder, int itemLayout, int dataBr, RequestBindingPresenter p) {
+    public void start(ListHandler<T> hanlder, int itemLayout, int dataBr, RequestBindingPresenter p) {
         presenter = p;
+        errLayout = hanlder.getErrorLayout();
         mRecyclerView.setAdapter((BaseRecyclerAdapter) (loadAdapter = (ADA) getRecyclerAdapter(itemLayout, dataBr, hanlder)));
+        catcher = new ErrorMessageCatcher(loadAdapter::error, this::onError);
         reload();
     }
 
@@ -66,7 +70,7 @@ public class RecyclerListPresenter<T,Q extends QueryBean,Req extends ListRequest
                 return;
             }
         }
-        presenter.addRequest(()->mRequestView.requestPager(presenter, rootRequest), this::onDataComplete);
+        presenter.addRequest(()->mRequestView.requestPager(presenter, rootRequest), this::onDataComplete, catcher::onCatch);
     }
 
     @Override
@@ -75,7 +79,8 @@ public class RecyclerListPresenter<T,Q extends QueryBean,Req extends ListRequest
         if(rootRequest instanceof PagerBean) {
             ((PagerBean) rootRequest).setPageNum(1);
         }
-        presenter.addRequest(()->mRequestView.requestPager(presenter, rootRequest), this::onDataComplete);
+        mRefreshLayout.setRefreshing(true);
+        presenter.addRequest(()->mRequestView.requestPager(presenter, rootRequest), this::onDataComplete, catcher::onCatch);
     }
 
     @Override
@@ -120,23 +125,7 @@ public class RecyclerListPresenter<T,Q extends QueryBean,Req extends ListRequest
 
     @Override
     public List<T>[] filters(boolean repeat, CompareCaller<T>... callers) {
-        List<T> allItems = loadAdapter.getAll();
-        List<T>[] selectedItems = new List[callers.length];
-        for (int i = 0; i < selectedItems.length; i++) {
-            selectedItems[i] = new LinkedList<>();
-        }
-
-        for (T item : allItems) {
-            for (int i = 0; i < callers.length; i++) {
-                if (callers[i].call(item)){
-                    selectedItems[i].add(item);
-                    if (!repeat){
-                        break;
-                    }
-                }
-            }
-        }
-        return selectedItems;
+        return ListUtil.filters(loadAdapter.getAll(), repeat, callers);
     }
 
     @Override
@@ -145,7 +134,13 @@ public class RecyclerListPresenter<T,Q extends QueryBean,Req extends ListRequest
     }
 
     protected void onDataComplete(List<T> v){
-        loadAdapter.add(v);
+        if (v != null){
+            loadAdapter.add(v);
+        }
+        mRefreshLayout.setRefreshing(false);
+    }
+
+    protected void onError(ExceptionCatcher catcher){
         mRefreshLayout.setRefreshing(false);
     }
 

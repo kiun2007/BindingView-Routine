@@ -13,9 +13,11 @@ public interface RequestBindingPresenter {
 
     <T>void addRequest(GetTNoParamCall<T> serviceCaller, SetCaller<T> setCaller);
 
+    <T>void addRequest(GetTNoParamCall<T> serviceCaller, SetCaller<T> setCaller, SetCaller<Exception> errCaller);
+
     boolean isConcurrent();
 
-    <T,E>E callServiceData(Class<T> serviceClass, ServiceCaller<T> callback);
+    <T,E>E callServiceData(Class<T> serviceClass, ServiceCaller<T> callback) throws Exception;
 
-    <T,E>List<E> callServiceList(Class<T> serviceClass, ServiceCaller<T> callback, PagerBean pager);
+    <T,E>List<E> callServiceList(Class<T> serviceClass, ServiceCaller<T> callback, PagerBean pager) throws Exception;
 }

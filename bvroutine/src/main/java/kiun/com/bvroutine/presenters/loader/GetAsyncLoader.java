@@ -6,17 +6,17 @@ import android.support.v4.content.AsyncTaskLoader;
 import kiun.com.bvroutine.interfaces.callers.GetTNoParamCall;
 import kiun.com.bvroutine.interfaces.callers.SetCaller;
 
-public class GetAsyncLoader<T> extends AsyncTaskLoader<T> {
+public class GetAsyncLoader extends AsyncTaskLoader<Object> {
 
-    T mApps;
+    Object mApps;
     @Override
-    public void deliverResult(T apps) {
+    public void deliverResult(Object apps) {
         if (isReset()) {
             if (apps != null) {
                 onReleaseResources(apps);
             }
         }
-        T oldApps = mApps;
+        Object oldApps = mApps;
         mApps = apps;
 
         if (isStarted()) {
@@ -46,7 +46,7 @@ public class GetAsyncLoader<T> extends AsyncTaskLoader<T> {
     }
 
     @Override
-    public void onCanceled(T apps) {
+    public void onCanceled(Object apps) {
         super.onCanceled(apps);
         // At this point we can release the resources associated with 'apps'
         // if needed.
@@ -66,28 +66,33 @@ public class GetAsyncLoader<T> extends AsyncTaskLoader<T> {
         }
     }
 
-    protected void onReleaseResources(T apps) {
+    protected void onReleaseResources(Object apps) {
     }
 
-    GetTNoParamCall<T> asyncCaller;
-    SetCaller<T> callbackCaller;
-    public GetAsyncLoader(@NonNull Context context, GetTNoParamCall<T> getCall, SetCaller<T> callback) {
+    GetTNoParamCall<Object> asyncCaller;
+    SetCaller<Object> callbackCaller;
+    SetCaller<Exception> errCallbackCaller;
+    public GetAsyncLoader(@NonNull Context context, GetTNoParamCall<Object> getCall, SetCaller<Object> callback, SetCaller<Exception> errCaller) {
         super(context);
         asyncCaller = getCall;
         callbackCaller = callback;
+        errCallbackCaller = errCaller;
     }
 
     @Override
-    public T loadInBackground() {
+    public Object loadInBackground() {
         try{
             return asyncCaller.call();
         }catch (Exception ex){
-            ex.printStackTrace();
+            return ex;
         }
-        return null;
     }
 
-    public SetCaller<T> getCallback() {
+    public SetCaller<Object> getCallback() {
         return callbackCaller;
+    }
+
+    public SetCaller<Exception> getErrorCallBack(){
+        return errCallbackCaller;
     }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+    <attr name="paintColor" format="color" />
+
     <declare-styleable name="NavigatorBar">
         <attr name="barTitle" format="string"/>
         <attr name="barNoback" format="boolean"/>
@@ -14,5 +15,30 @@
         <attr name="barRightTitle" format="string"/>
         <attr name="barLeftImage" format="reference"/>
         <attr name="titleImage" format="reference"/>
+        <attr name="barBackground" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="HeadViewPager">
+        <attr name="titles" format="string" />
+        <attr name="itemWidth" format="dimension" />
+        <attr name="headPadding" format="dimension" />
+        <attr name="bottomPadding" format="dimension" />
+        <attr name="itemPadding" format="dimension"/>
+        <attr name="paintColor" />
+        <attr name="textSeletedColor" format="color" />
+        <attr name="unselectColor" format="color" />
+        <attr name="textSize" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="DrawLinearLayout">
+        <attr name="radius" format="dimension" />
+        <attr name="paintColor" />
+        <attr name="stroke" format="dimension" />
+        <attr name="drawPadding" format="dimension"/>
+        <attr name="paintStytle" format="enum">
+            <enum name="fill" value="0" />
+            <enum name="stroke" value="1" />
+            <enum name="fillAndStroke" value="2"/>
+        </attr>
     </declare-styleable>
 </resources>

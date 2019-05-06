@@ -10,6 +10,7 @@ import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ public class NavigatorBar extends LinearLayout {
     private LinearLayout rightButton;
     private ActionBarItem barItem = new ActionBarItem();
     ActionBarBinding dataBinding;
+    TypedArray array;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public NavigatorBar(Context context) {
@@ -51,8 +53,49 @@ public class NavigatorBar extends LinearLayout {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public NavigatorBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        dataBinding = DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.action_bar, this, true);
+        array = context.obtainStyledAttributes(attrs, R.styleable.NavigatorBar);
+        setTag(TAG);
+    }
+
+    @Override
+    public void addView(View child) {
+        super.addView(child);
+    }
+
+    @Override
+    protected boolean addViewInLayout(View child, int index, ViewGroup.LayoutParams params) {
+        return super.addViewInLayout(child, index, params);
+    }
+
+    @Override
+    protected void measureChildren(int widthMeasureSpec, int heightMeasureSpec) {
+        super.measureChildren(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    @Override
+    protected void measureChild(View child, int parentWidthMeasureSpec, int parentHeightMeasureSpec) {
+        super.measureChild(child, parentWidthMeasureSpec, parentHeightMeasureSpec);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
+        int initCount = getChildCount();
+        View firstChild = null;
+        if (initCount >= 1){
+            firstChild = getChildAt(0);
+            removeView(firstChild);
+        }
+        dataBinding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.action_bar, this, true);
         dataBinding.setBarItem(barItem);
+
+        if (firstChild != null){
+            dataBinding.centerPanel.removeAllViews();
+            dataBinding.centerPanel.addView(firstChild);
+        }
+
+        if (array == null) return;
 
         leftButton = findViewById(R.id.backImageView);
         rightImageView = findViewById(R.id.rightImageView);
@@ -60,7 +103,6 @@ public class NavigatorBar extends LinearLayout {
         rightButton = findViewById(R.id.rightButtonLL);
         rightTextView = findViewById(R.id.rightTitleTextView);
 
-        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.NavigatorBar);
         String title = array.getString(R.styleable.NavigatorBar_barTitle);
         if (title != null) {
             titleTextView.setText(title);
@@ -100,6 +142,11 @@ public class NavigatorBar extends LinearLayout {
             rightTextView.setText(rightTitle);
         }
 
+        int bgColor = array.getColor(R.styleable.NavigatorBar_barBackground, -1);
+        if (bgColor > 0){
+            findViewById(R.id.mainLinear).setBackgroundColor(bgColor);
+        }
+
         int type = array.getInteger(R.styleable.NavigatorBar_barStyle, 0);
         switch (type) {
             case 2:
@@ -109,7 +156,7 @@ public class NavigatorBar extends LinearLayout {
                 this.findViewById(R.id.mainLinear).setBackgroundResource(0);
                 break;
         }
-        setTag(TAG);
+        array.recycle();
     }
 
     public ActionBarItem getBarItem() {

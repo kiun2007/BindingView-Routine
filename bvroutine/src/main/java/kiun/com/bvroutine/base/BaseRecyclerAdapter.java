@@ -1,33 +1,50 @@
 package kiun.com.bvroutine.base;
 
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import kiun.com.bvroutine.handlers.ListHandler;
 import kiun.com.bvroutine.interfaces.presenter.ListViewPresenter;
 import kiun.com.bvroutine.interfaces.view.LoadAdapter;
 
 public abstract class BaseRecyclerAdapter<T, L extends ListViewPresenter> extends RecyclerView.Adapter<BindingHolder> implements LoadAdapter<T> {
 
+    protected static final int LOADING_VIEW = -100;
+    protected static final int ERROR_VIEW = -101;
+    protected static final int EMPTY_VIEW = -102;
+
+    protected int errLayout;
     protected int mLayoutId;
     protected int mDataBr;
     protected boolean isError = false;
+    protected boolean isEmpty = false;
     protected String errorContent = null;
-    protected BaseHandler mHandler;
+    protected ListHandler mHandler;
     protected List<T> listData = new LinkedList();
     protected L listViewPresenter;
 
-    public BaseRecyclerAdapter(L presenter, int layoutId, int dataBr, BaseHandler handler){
+    public BaseRecyclerAdapter(L presenter, int layoutId, int errLayout, int dataBr, ListHandler handler){
         mLayoutId = layoutId;
         mDataBr = dataBr;
         mHandler = handler;
         listViewPresenter = presenter;
+        this.errLayout = errLayout;
     }
+
+    public abstract List showList();
 
     @Override
     public void add(List<T> list) {
         isError = false;
         if(list != null){
+            isEmpty = list.size() == 0;
             listData.addAll(list);
             notifySet();
         }
@@ -36,12 +53,60 @@ public abstract class BaseRecyclerAdapter<T, L extends ListViewPresenter> extend
     @Override
     public void error(String err) {
         errorContent = err;
-        isError = true;
+        isError = true;isEmpty = false;
+        notifySet();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (isError) return ERROR_VIEW;
+        if(showList() == null || showList().size() == 0) {
+            return isEmpty ? EMPTY_VIEW : LOADING_VIEW;
+        }
+        return super.getItemViewType(position);
     }
 
     @Override
     public int getItemCount() {
-        return listData.size();
+        if (isError) return 1;
+        if (showList() == null || showList().size() == 0){
+            return 1;
+        }
+        return showList().size();
+    }
+
+    //父类只处理异常的信息.
+    @Override
+    public BindingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        ViewDataBinding binding;
+        if (viewType < 0){
+            if (errLayout == 0){
+                return null;
+            }
+            binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), errLayout, parent, false);
+            BindingHolder holder = new BindingHolder(binding.getRoot());
+            holder.setBinding(binding);
+            return holder;
+        }
+        return null;
+    }
+
+    //父类只处理异常的信息.
+    @Override
+    public void onBindViewHolder(@NonNull BindingHolder holder, int position) {
+
+        int viewType = getItemViewType(position);
+
+        if (viewType < 0) {
+            if (mHandler != null && mHandler.getBR() > 0) {
+                mHandler.setType(Math.abs(viewType) - 100);
+                if (mHandler.isError()){
+                    mHandler.error(errorContent);
+                    errorContent = null;
+                }
+                holder.getBinding().setVariable(mHandler.getBR(), mHandler);
+            }
+        }
     }
 
     @Override

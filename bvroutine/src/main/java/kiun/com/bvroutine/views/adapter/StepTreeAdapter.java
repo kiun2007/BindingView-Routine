@@ -15,58 +15,46 @@ import kiun.com.bvroutine.base.BaseRecyclerAdapter;
 import kiun.com.bvroutine.base.BindingHolder;
 import kiun.com.bvroutine.data.viewmodel.TreeNode;
 import kiun.com.bvroutine.data.viewmodel.TreeViewNode;
+import kiun.com.bvroutine.handlers.ListHandler;
 import kiun.com.bvroutine.interfaces.view.LoadAdapter;
 import kiun.com.bvroutine.interfaces.view.TreeStepView;
 import kiun.com.bvroutine.presenters.StepTreePresenter;
 
 public class StepTreeAdapter extends BaseRecyclerAdapter<TreeNode, StepTreePresenter> implements LoadAdapter<TreeNode> {
 
-    private static final int ERROR_VIEW = -101;
-    private static final int EMPTY_VIEW = -102;
     TreeStepView mTreeStepView;
     int expHandlerBr;
-    int errLayout;
     List<TreeHandler> showTreeNodes = new LinkedList<>();
 
-    public StepTreeAdapter(StepTreePresenter presenter, int expHandlerBr, int errLayout, int dataBr, BaseHandler handler, TreeStepView treeStepView) {
-        super(presenter, 0, dataBr, handler);
+    public StepTreeAdapter(StepTreePresenter presenter, int expHandlerBr, int errLayout, int dataBr, ListHandler handler, TreeStepView treeStepView) {
+        super(presenter, 0, errLayout, dataBr, handler);
         this.expHandlerBr = expHandlerBr;
         mTreeStepView = treeStepView;
-        this.errLayout = errLayout;
     }
 
     @Override
     public BindingHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        ViewDataBinding binding;
-        if (viewType == ERROR_VIEW){
-            if (errLayout == 0){
-                return null;
-            }
-            binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), errLayout, parent, false);
+        if (viewType < 0){
+            return super.onCreateViewHolder(parent, viewType);
         }else{
-            binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), viewType, parent, false);
+            ViewDataBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), viewType, parent, false);
+            if(mHandler != null && mHandler.getBR() > 0){
+                binding.setVariable(mHandler.getBR(), mHandler);
+            }
+
+            BindingHolder holder = new BindingHolder(binding.getRoot());
+            holder.setBinding(binding);
+            return holder;
         }
-
-        if(mHandler != null && mHandler.getBR() > 0){
-            binding.setVariable(mHandler.getBR(), mHandler);
-        }
-
-        BindingHolder holder = new BindingHolder(binding.getRoot());
-        holder.setBinding(binding);
-        return holder;
-    }
-
-    @Override
-    public int getItemCount() {
-        if (isError) return 1;
-        return showTreeNodes.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (isError) return ERROR_VIEW;
-        if(showTreeNodes.size() == 0) return EMPTY_VIEW;
+        int superType;
+        if ((superType = super.getItemViewType(position)) < 0){
+            return superType;
+        }
         return showTreeNodes.get(position).getTreeNode().getLayout();
     }
 
@@ -75,8 +63,8 @@ public class StepTreeAdapter extends BaseRecyclerAdapter<TreeNode, StepTreePrese
 
         if (holder != null){
             int viewType = getItemViewType(position);
-            if (viewType == ERROR_VIEW || viewType == EMPTY_VIEW){
-                holder.getBinding().setVariable(expHandlerBr, viewType == ERROR_VIEW ? errorHandler() : emptyHandler());
+            if (viewType < 0){
+                super.onBindViewHolder(holder, position);
             }else{
                 TreeHandler handler = showTreeNodes.get(position);
                 TreeNode treeNode = handler.getTreeNode();
@@ -92,6 +80,11 @@ public class StepTreeAdapter extends BaseRecyclerAdapter<TreeNode, StepTreePrese
                 holder.getBinding().executePendingBindings();
             }
         }
+    }
+
+    @Override
+    public List showList() {
+        return showTreeNodes;
     }
 
     @Override

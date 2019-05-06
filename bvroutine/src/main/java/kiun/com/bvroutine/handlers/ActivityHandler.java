@@ -16,15 +16,20 @@ import kiun.com.bvroutine.data.BaseBean;
 import kiun.com.bvroutine.data.KeyValue;
 import kiun.com.bvroutine.interfaces.callers.SetCaller;
 
-public class ActivityHandler<B extends Parcelable> extends BaseHandler<B>{
+public class ActivityHandler<B extends Parcelable> extends ListHandler<B>{
 
     private Class<? extends Activity> activityClz;
     private List<KeyValue<Class<? extends Activity>,SetCaller<Intent>>> keyValues = new LinkedList<>();
 
     public ActivityHandler(int handlerBr, Class<? extends Activity> clz){
-        super(handlerBr);
+        this(handlerBr, 0, clz);
+    }
+
+    public ActivityHandler(int handlerBr, int errorLayout, Class<? extends Activity> clz){
+        super(handlerBr, errorLayout);
         activityClz = clz;
     }
+
 
     public void addResult(Class<? extends Activity> clz, SetCaller<Intent> caller){
         keyValues.add(new KeyValue<>(clz, caller));

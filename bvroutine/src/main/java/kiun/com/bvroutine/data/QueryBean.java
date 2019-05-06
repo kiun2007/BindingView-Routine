@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -59,6 +60,9 @@ public class QueryBean<T> {
         Class clz = object.getClass();
         while(!clz.getSimpleName().equals(base)){
             for (Field field : clz.getDeclaredFields()){
+                if (Modifier.isStatic(field.getModifiers())){
+                    continue;
+                }
                 if (!field.isAnnotationPresent(IgnoreParam.class)){
                     allFields.add(field);
                 }

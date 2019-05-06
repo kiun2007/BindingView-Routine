@@ -52,6 +52,11 @@ public class ProgressDialogPresenter implements DialogPresenter {
         mainLoopHandler.sendMessage(message);
     }
 
+    @Override
+    public void show() {
+
+    }
+
     Handler mainLoopHandler = new Handler(Looper.getMainLooper()){
         @Override
         public void dispatchMessage(Message msg) {

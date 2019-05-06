@@ -1,6 +1,6 @@
 package kiun.com.bvroutine.interfaces.view;
 
-public interface BindingView {
+public interface BindingView extends BaseView {
 
     int getViewId();
 

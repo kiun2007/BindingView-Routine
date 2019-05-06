@@ -8,38 +8,46 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
-
-import kiun.com.bvroutine.base.BVBaseFragment;
+import kiun.com.bvroutine.base.NavigationBaseFragment;
 import kiun.com.bvroutine.data.BaseBean;
 import kiun.com.bvroutine.handlers.ActionBarHandler;
 import kiun.com.bvroutine.interfaces.handler.FragmentNavigationHandler;
 import kiun.com.bvroutine.interfaces.presenter.NavigationPresenter;
 import kiun.com.bvroutine.interfaces.view.NavigationView;
 
-public class NormalNavigationPresenter implements NavigationPresenter {
+public class NormalNavigationPresenter implements NavigationPresenter, FragmentManager.OnBackStackChangedListener {
 
     public static final String ARGS_VALUE = "VALUE";
 
     int enterAnimation = -1, exitAnimation = -1, popEnterAnimation = -1, popExitAnimation = -1;
     int contentViewId;
     FragmentManager mFragmentManager;
-    Class<? extends BVBaseFragment> rootFragment = null;
+    boolean replace = false;
+    Class<? extends NavigationBaseFragment> rootFragment = null;
     FragmentNavigationHandler handler = new FragmentNavigationHandler(this);
     NavigationActivityHandler barHandler = new NavigationActivityHandler();
+
+    public NormalNavigationPresenter(){}
+
+    public NormalNavigationPresenter(boolean replace){
+        this.replace = replace;
+    }
 
     FragmentManager.FragmentLifecycleCallbacks lifecycleCallbacks = new FragmentManager.FragmentLifecycleCallbacks() {
         @Override
         public void onFragmentViewCreated(FragmentManager fm, Fragment f, View v, Bundle savedInstanceState) {
-            if (f instanceof BVBaseFragment){
-                BVBaseFragment fragment = (BVBaseFragment) f;
+            if (f instanceof NavigationBaseFragment){
+                NavigationBaseFragment fragment = (NavigationBaseFragment) f;
                 fragment.setNavigationHandler(handler);
                 fragment.setBarHandler(barHandler);
                 handler.setCurrent(fragment);
             }
-
-            System.out.println(f.toString());
         }
     };
+
+    @Override
+    public void onBackStackChanged() {
+    }
 
     public class NavigationActivityHandler extends ActionBarHandler {
 
@@ -56,10 +64,11 @@ public class NormalNavigationPresenter implements NavigationPresenter {
         contentViewId = view.getContentViewId();
         mFragmentManager = fragmentManager;
         mFragmentManager.registerFragmentLifecycleCallbacks(lifecycleCallbacks, false);
+        mFragmentManager.addOnBackStackChangedListener(this);
     }
 
     @Override
-    public void setRoot(Class<? extends BVBaseFragment> clz, BaseBean value) {
+    public void setRoot(Class<? extends NavigationBaseFragment> clz, BaseBean value) {
         commitFragment(clz, value, true);
     }
 
@@ -69,7 +78,7 @@ public class NormalNavigationPresenter implements NavigationPresenter {
     }
 
     @Override
-    public void backNavi(Class<? extends BVBaseFragment> clz) {
+    public void backNavi(Class<? extends NavigationBaseFragment> clz) {
         mFragmentManager.popBackStack(clz.getName(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
 
@@ -80,13 +89,13 @@ public class NormalNavigationPresenter implements NavigationPresenter {
         }
     }
 
-    private void commitFragment(Class<? extends BVBaseFragment> clz, BaseBean value, boolean isRoot){
+    private void commitFragment(Class<? extends NavigationBaseFragment> clz, BaseBean value, boolean isRoot){
 
         if (isRoot && mFragmentManager.getFragments().size() > 0) return;
 
         FragmentTransaction transaction = mFragmentManager.beginTransaction();
         try {
-            BVBaseFragment fragment = clz.newInstance();
+            NavigationBaseFragment fragment = clz.newInstance();
 
             Bundle bundle = new Bundle();
             if(value != null){
@@ -95,20 +104,27 @@ public class NormalNavigationPresenter implements NavigationPresenter {
 
             if (isRoot && rootFragment == null){
                 rootFragment = clz;
-                bundle.putBoolean(BVBaseFragment.ROOT_TAG, true);
+                bundle.putBoolean(NavigationBaseFragment.ROOT_TAG, true);
                 transaction.add(contentViewId, fragment);
             }else{
                 if (exitAnimation > 0 && enterAnimation > 0){
-                    transaction.setCustomAnimations(enterAnimation, exitAnimation, popEnterAnimation, popExitAnimation);
+                    transaction.setCustomAnimations(enterAnimation, exitAnimation, popEnterAnimation, popExitAnimation); //,
                 }else{
                     transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
                             android.R.anim.slide_out_right, android.R.anim.slide_in_left);
                 }
-                transaction.replace(contentViewId, fragment);
+
+                if (replace){
+                    transaction.replace(contentViewId, fragment);
+                }else{
+                    Fragment lastFragment = mFragmentManager.getFragments().get(mFragmentManager.getFragments().size() - 1);
+                    transaction.add(contentViewId,fragment);
+                    transaction.hide(lastFragment);
+                }
+                transaction.addToBackStack(clz.getName());
             }
             fragment.setArguments(bundle);
-
-            transaction.addToBackStack(clz.getName()).commit();
+            transaction.commitAllowingStateLoss();
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -118,7 +134,7 @@ public class NormalNavigationPresenter implements NavigationPresenter {
 
     @SuppressLint("ResourceType")
     @Override
-    public void gotoNavi(Class<? extends BVBaseFragment> clz, BaseBean value) {
+    public void gotoNavi(Class<? extends NavigationBaseFragment> clz, BaseBean value) {
         commitFragment(clz, value, false);
     }
 

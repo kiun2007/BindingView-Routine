@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import kiun.com.bvroutine.data.ExtraValue;
 import kiun.com.bvroutine.data.KeyValue;
 import kiun.com.bvroutine.data.PagerBean;
 import kiun.com.bvroutine.interfaces.callers.GetTNoParamCall;
@@ -29,7 +30,7 @@ public class RetrofitRequestPresenter implements RequestBindingPresenter, Loader
 
     SeviceRequestView viewInterface;
     LoaderManager loaderManager;
-    Map<Integer, KeyValue<GetTNoParamCall, SetCaller>> requestMaps = new HashMap<>();
+    Map<Integer, ExtraValue<GetTNoParamCall, SetCaller, SetCaller>> requestMaps = new HashMap<>();
 
     public RetrofitRequestPresenter(SeviceRequestView viewInterface){
         this.viewInterface = viewInterface;
@@ -38,8 +39,13 @@ public class RetrofitRequestPresenter implements RequestBindingPresenter, Loader
 
     @Override
     public <T> void addRequest(GetTNoParamCall<T> serviceCaller, SetCaller<T> setCaller) {
+        addRequest(serviceCaller, setCaller, null);
+    }
+
+    @Override
+    public <T> void addRequest(GetTNoParamCall<T> serviceCaller, SetCaller<T> setCaller, SetCaller<Exception> errCaller) {
         int taskId = (int) (Math.random() * 1000 * 1000 * 1000);
-        requestMaps.put(taskId, new KeyValue<>(serviceCaller, setCaller));
+        requestMaps.put(taskId, new ExtraValue<>(serviceCaller, setCaller, errCaller));
         loaderManager.restartLoader(taskId, new Bundle(), this);
     }
 
@@ -49,38 +55,30 @@ public class RetrofitRequestPresenter implements RequestBindingPresenter, Loader
     }
 
     @Override
-    public <T, E> E callServiceData(Class<T> serviceClass, ServiceCaller<T> callback) {
+    public <T, E> E callServiceData(Class<T> serviceClass, ServiceCaller<T> callback) throws Exception {
         T services = viewInterface.createService(serviceClass);
 
         Call<E> call = callback.requestCall(services);
-        try {
-            Response<E> response = call.execute();
-            E warp = response.body();
-            if(warp instanceof DataWarp){
-                return (E) ((DataWarp) warp).getData();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        Response<E> response = call.execute();
+        E warp = response.body();
+        if(warp instanceof DataWarp){
+            return (E) ((DataWarp) warp).getData();
         }
         return null;
     }
 
     @Override
-    public <T, E> List<E> callServiceList(Class<T> serviceClass, ServiceCaller<T> callback, PagerBean pagerBean) {
+    public <T, E> List<E> callServiceList(Class<T> serviceClass, ServiceCaller<T> callback, PagerBean pagerBean) throws Exception {
         T services = viewInterface.createService(serviceClass);
 
         Call call = callback.requestCall(services);
-        try {
-            Response response = call.execute();
-            Object warp = response.body();
-            if(warp instanceof ListWarp){
-                if(pagerBean != null){
-                    pagerBean.setPages(((ListWarp) warp).getPages());
-                }
-                return ((ListWarp) warp).getList();
+        Response response = call.execute();
+        Object warp = response.body();
+        if(warp instanceof ListWarp){
+            if(pagerBean != null){
+                pagerBean.setPages(((ListWarp) warp).getPages());
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            return ((ListWarp) warp).getList();
         }
         return null;
     }
@@ -90,8 +88,8 @@ public class RetrofitRequestPresenter implements RequestBindingPresenter, Loader
     public Loader onCreateLoader(int id, @Nullable Bundle args) {
 
         if(requestMaps.containsKey(id)){
-            KeyValue<GetTNoParamCall, SetCaller> request = requestMaps.remove(id);
-            return new GetAsyncLoader(viewInterface.getContext(), request.key(), request.value());
+            ExtraValue<GetTNoParamCall, SetCaller, SetCaller> request = requestMaps.remove(id);
+            return new GetAsyncLoader(viewInterface.getContext(), request.key(), request.value(), request.extra());
         }
         return null;
     }
@@ -99,7 +97,14 @@ public class RetrofitRequestPresenter implements RequestBindingPresenter, Loader
     @Override
     public void onLoadFinished(@NonNull Loader loader, Object data) {
         if (loader instanceof GetAsyncLoader){
-            ((GetAsyncLoader) loader).getCallback().call(data);
+            GetAsyncLoader asyncLoader = (GetAsyncLoader) loader;
+            if (data instanceof Exception){
+                if (asyncLoader.getErrorCallBack() != null){
+                    asyncLoader.getErrorCallBack().call((Exception) data);
+                }
+            }else{
+                asyncLoader.getCallback().call(data);
+            }
         }
     }
 

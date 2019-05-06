@@ -9,6 +9,7 @@ import kiun.com.bvroutine.data.PagerBean;
 import kiun.com.bvroutine.data.QueryBean;
 import kiun.com.bvroutine.data.viewmodel.TreeNode;
 import kiun.com.bvroutine.data.viewmodel.TreeViewNode;
+import kiun.com.bvroutine.handlers.ListHandler;
 import kiun.com.bvroutine.interfaces.view.LoadAdapter;
 import kiun.com.bvroutine.interfaces.view.TreeStepView;
 import kiun.com.bvroutine.views.adapter.StepTreeAdapter;
@@ -19,18 +20,17 @@ import kiun.com.bvroutine.views.adapter.StepTreeAdapter;
 public class StepTreePresenter extends RecyclerListPresenter<TreeNode, QueryBean, TreeStepView, LoadAdapter> {
 
     private int rootLayout;
-    private int expHandlerBr, errLayout;
+    private int expHandlerBr;
     private boolean isLoading;
 
-    public StepTreePresenter(RecyclerView recyclerView, SwipeRefreshLayout refreshLayout, int expHandlerBr, int errLayout) {
+    public StepTreePresenter(RecyclerView recyclerView, SwipeRefreshLayout refreshLayout, int expHandlerBr) {
         super(recyclerView, refreshLayout);
         this.expHandlerBr = expHandlerBr;
-        this.errLayout = errLayout;
         mRefreshLayout.setRefreshing(true);
     }
 
     @Override
-    protected BaseRecyclerAdapter getRecyclerAdapter(int itemLayout, int dataBr, BaseHandler<TreeNode> hanlder) {
+    protected BaseRecyclerAdapter getRecyclerAdapter(int itemLayout, int dataBr, ListHandler<TreeNode> hanlder) {
         rootLayout = itemLayout;
         return new StepTreeAdapter(this, expHandlerBr,errLayout, dataBr, hanlder, mRequestView);
     }

@@ -1,6 +1,7 @@
 package kiun.com.bvroutine.base;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -33,6 +34,8 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
         return true;
     }
 
+    public void onCreateBefore(){}
+
     private void create(){
 
         if(isWithActionBar()){
@@ -58,6 +61,7 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        onCreateBefore();
         super.onCreate(savedInstanceState);
         create();
     }
@@ -68,6 +72,7 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        onCreateBefore();
         super.onCreate(savedInstanceState, persistentState);
         create();
     }
@@ -111,6 +116,11 @@ public abstract class BVBaseActivity<T extends ViewDataBinding> extends AppCompa
 
     public void startForResult(Class clz, SetCaller<Intent> caller){
         startForResult(clz, null,null,caller);
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
     }
 
     @Override

@@ -4,8 +4,9 @@ import kiun.com.bindingdemo.BR;
 import kiun.com.bindingdemo.R;
 import kiun.com.bindingdemo.databinding.FragmentMainBinding;
 import kiun.com.bvroutine.base.BVBaseFragment;
+import kiun.com.bvroutine.base.NavigationBaseFragment;
 
-public class FirstFragment extends BVBaseFragment<FragmentMainBinding> {
+public class FirstFragment extends NavigationBaseFragment<FragmentMainBinding> {
 
     @Override
     public int getViewId() {

@@ -6,5 +6,7 @@ public interface DialogPresenter {
 
     void showMessage(String msg, Object ...values);
 
+    void show();
+
     void hide();
 }

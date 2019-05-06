@@ -6,7 +6,7 @@
     <LinearLayout
         android:id="@+id/mainLinear"
         android:orientation="vertical"
-        android:background="#3088EE"
+        android:background="#3699FF"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <kiun.com.bvroutine.views.layout.StatusLayout
@@ -16,6 +16,24 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="45dp">
+            <LinearLayout
+                android:id="@+id/centerPanel"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp"
+                    android:id="@+id/titleTextView"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={barItem.title}"
+                    android:textColor="#FFF"
+                    android:textSize="19sp" />
+            </LinearLayout>
             <LinearLayout
                 android:onClick="@{()->barItem.handler.onClick(context,100,null)}"
                 android:visibility="@{barItem.barNoBack?View.GONE:View.VISIBLE}"
@@ -41,15 +59,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
-            <TextView
-                android:id="@+id/titleTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:text="@={barItem.title}"
-                android:textColor="#FFF"
-                android:textSize="19sp" />
             <LinearLayout
                 android:id="@+id/rightButtonLL"
                 android:layout_centerVertical="true"
