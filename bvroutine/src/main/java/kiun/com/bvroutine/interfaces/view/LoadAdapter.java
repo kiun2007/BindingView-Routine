@@ -1,5 +1,7 @@
 package kiun.com.bvroutine.interfaces.view;
 
+import android.view.View;
+
 import java.util.List;
 
 public interface LoadAdapter<T> {
@@ -30,4 +32,15 @@ public interface LoadAdapter<T> {
      * 发生错误.
      */
     void error(String err);
+
+    /**
+     * 添加底部.
+     * @param footerView
+     */
+    void addFooterView(View footerView);
+
+    /**
+     * 移除底部.
+     */
+    void removeFooter();
 }

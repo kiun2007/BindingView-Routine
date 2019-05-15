@@ -1,16 +1,15 @@
 package kiun.com.bindingdemo;
 
+import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
 import android.view.Gravity;
 import android.view.View;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import kiun.com.bindingdemo.bean.AdXReqBase;
+import kiun.com.bindingdemo.bean.PblmBean;
 import kiun.com.bindingdemo.bean.QueryListBase;
 import kiun.com.bindingdemo.bean.QueryTCListLastBase;
 import kiun.com.bindingdemo.bean.RsvrRgstrBean;
@@ -18,7 +17,6 @@ import kiun.com.bindingdemo.bean.RsvrRgstrReqBean;
 import kiun.com.bindingdemo.databinding.ActivityItemBinding;
 import kiun.com.bindingdemo.services.OffOnlieServices;
 import kiun.com.bindingdemo.warp.ServiceGenerator;
-import kiun.com.bvroutine.base.BaseHandler;
 import kiun.com.bvroutine.base.RequestBVActivity;
 import kiun.com.bvroutine.data.PagerBean;
 import kiun.com.bvroutine.data.QueryBean;
@@ -32,12 +30,20 @@ import kiun.com.bvroutine.interfaces.view.TreeStepView;
 import kiun.com.bvroutine.presenters.ProgressDialogPresenter;
 import kiun.com.bvroutine.presenters.StepTreePresenter;
 import kiun.com.bvroutine.presenters.WindowDialog;
+import kiun.com.bvroutine_apt.ActivityOpen;
+import kiun.com.bvroutine_apt.IntentValue;
 
 public class ItemActivity extends RequestBVActivity<ActivityItemBinding> implements TreeStepView {
 
     ListViewPresenter<TreeNode,?,TreeStepView> listViewPresenter = null;
     DialogPresenter dialogPresenter = null;
     DialogPresenter windowPresenter = null;
+
+    @IntentValue
+    int itemValue;
+
+    @IntentValue
+    String title;
 
     @Override
     public boolean isWithActionBar() {
@@ -62,10 +68,27 @@ public class ItemActivity extends RequestBVActivity<ActivityItemBinding> impleme
         windowPresenter = new WindowDialog(this, R.layout.dialog_bottom,BR.dialog, Gravity.RIGHT);
 
 //        windowPresenter.show();
+        ActivityManager manager;
 
         QueryBean.setBaseGuid("ee5c759f97a24cedb646a3c9d5e5eca9");
-
+//        Instrumentation instrumentation = new Instrumentation();
+//        instrumentation.callActivityOnCreate();
         getBarItem().setTitle("------");
+    }
+
+    @ActivityOpen
+    public void openProblem(PblmBean pblmBean, int add){
+
+    }
+
+    @ActivityOpen
+    public void openItem(String item){
+        
+    }
+
+    @ActivityOpen
+    public void openValue(String value){
+
     }
 
     public void onViewClick(View view){
@@ -78,32 +101,32 @@ public class ItemActivity extends RequestBVActivity<ActivityItemBinding> impleme
 
     int index = 1;
     public void onClick(View view){
-        dialogPresenter.showMessage("开始下载", 100, 5);
-
-        new Handler(){
-            @Override
-            public void dispatchMessage(Message msg) {
-                dialogPresenter.showMessage("开始下载", 100, index++);
-            }
-        }.sendEmptyMessageDelayed(0, 1000);
-        new Handler(){
-            @Override
-            public void dispatchMessage(Message msg) {
-                dialogPresenter.showMessage("开始下载", 100, index++);
-            }
-        }.sendEmptyMessageDelayed(0, 2000);
-        new Handler(){
-            @Override
-            public void dispatchMessage(Message msg) {
-                dialogPresenter.showMessage("开始下载", 100, index++);
-            }
-        }.sendEmptyMessageDelayed(0, 3000);
-        new Handler(){
-            @Override
-            public void dispatchMessage(Message msg) {
-                dialogPresenter.hide();
-            }
-        }.sendEmptyMessageDelayed(0, 5000);
+//        dialogPresenter.showMessage("开始下载", 100, 5);
+//
+//        new Handler(){
+//            @Override
+//            public void dispatchMessage(Message msg) {
+//                dialogPresenter.showMessage("开始下载", 100, index++);
+//            }
+//        }.sendEmptyMessageDelayed(0, 1000);
+//        new Handler(){
+//            @Override
+//            public void dispatchMessage(Message msg) {
+//                dialogPresenter.showMessage("开始下载", 100, index++);
+//            }
+//        }.sendEmptyMessageDelayed(0, 2000);
+//        new Handler(){
+//            @Override
+//            public void dispatchMessage(Message msg) {
+//                dialogPresenter.showMessage("开始下载", 100, index++);
+//            }
+//        }.sendEmptyMessageDelayed(0, 3000);
+//        new Handler(){
+//            @Override
+//            public void dispatchMessage(Message msg) {
+//                dialogPresenter.hide();
+//            }
+//        }.sendEmptyMessageDelayed(0, 5000);
     }
 
     @Override

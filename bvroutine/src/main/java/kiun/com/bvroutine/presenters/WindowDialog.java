@@ -60,7 +60,13 @@ public class WindowDialog implements DialogPresenter {
 
     @Override
     public void configDialog(String title, Object... args) {
-
+        if (args.length > 0 && args.length % 2 == 0){
+            for (int i = 0; i < args.length; i += 2){
+                if (args[i] instanceof Integer){
+                    mDataBinding.setVariable((Integer) args[i], args[i+1]);
+                }
+            }
+        }
     }
 
     @Override

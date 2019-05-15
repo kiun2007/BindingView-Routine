@@ -18,6 +18,7 @@ import kiun.com.bvroutine.interfaces.view.ListRequestView;
 import kiun.com.bvroutine.interfaces.view.SpinnerView;
 import kiun.com.bvroutine.presenters.RecyclerListPresenter;
 import kiun.com.bvroutine.presenters.SpinnerPresenter;
+import kiun.com.bvroutine_apt.ActivityOpen;
 
 public class MainActivity extends RequestBVActivity<ActivityMainBinding> implements ListRequestView<PagerBean>, SpinnerView {
 
@@ -42,13 +43,11 @@ public class MainActivity extends RequestBVActivity<ActivityMainBinding> impleme
         mViewBinding.setListViewPresenter(listViewPresenter);
         mViewBinding.setReqBean(pblmListReqBean);
         spinnerPresenter = new SpinnerPresenter(R.layout.item_spinselect_blue_mid, this, mViewBinding.firstSpinner,mViewBinding.secondSpinner);
-        spinnerPresenter.setGetter(0, this::firstSpinner);
-        spinnerPresenter.setGetter(1, this::secondSpinner);
-        spinnerPresenter.start();
+        spinnerPresenter.setGetter(0, this::firstSpinner).setGetter(1, this::secondSpinner).start();
     }
 
     public void onClick(View v){
-        int a = 0;
+        ItemActivityHandler.openItem(this,"1231");
     }
 
     @Override
@@ -59,6 +58,7 @@ public class MainActivity extends RequestBVActivity<ActivityMainBinding> impleme
 
     @Override
     public List requestPager(RequestBindingPresenter p, PagerBean bean) throws Exception {
+        Thread.sleep(5000);
         return p.callServiceList(SupervisionListServices.class, s->s.pblmPageList(pblmListReqBean), bean);
     }
 
@@ -76,6 +76,11 @@ public class MainActivity extends RequestBVActivity<ActivityMainBinding> impleme
         list.add("2-3");
         list.add("2-4");
         return new SpinnerValue<String>(0,list);
+    }
+
+    @ActivityOpen
+    public void openVoid(){
+
     }
 
     @Override

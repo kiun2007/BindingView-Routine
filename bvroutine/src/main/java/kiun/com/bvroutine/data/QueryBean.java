@@ -23,6 +23,10 @@ public class QueryBean<T> {
         baseGuid = guid;
     }
 
+    public static String getBaseGuid(){
+        return baseGuid;
+    }
+
     private T extra;
 
     public QueryBean(){

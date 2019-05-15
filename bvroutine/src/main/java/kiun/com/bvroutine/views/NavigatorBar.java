@@ -89,19 +89,19 @@ public class NavigatorBar extends LinearLayout {
         }
         dataBinding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.action_bar, this, true);
         dataBinding.setBarItem(barItem);
-
-        if (firstChild != null){
-            dataBinding.centerPanel.removeAllViews();
-            dataBinding.centerPanel.addView(firstChild);
-        }
-
-        if (array == null) return;
-
         leftButton = findViewById(R.id.backImageView);
         rightImageView = findViewById(R.id.rightImageView);
         titleTextView = findViewById(R.id.titleTextView);
         rightButton = findViewById(R.id.rightButtonLL);
         rightTextView = findViewById(R.id.rightTitleTextView);
+
+        if (firstChild != null){
+            dataBinding.centerPanel.removeAllViews();
+            dataBinding.centerPanel.addView(firstChild);
+            rightButton.setVisibility(View.GONE);
+        }
+
+        if (array == null) return;
 
         String title = array.getString(R.styleable.NavigatorBar_barTitle);
         if (title != null) {

@@ -37,8 +37,9 @@ public class SpinnerPresenter extends ViewsPresenter<Spinner> implements Adapter
         }
     }
 
-    public<IN extends Object> void setGetter(int index, GetThrowCaller<IN,SpinnerValue> caller){
+    public<IN extends Object> SpinnerPresenter setGetter(int index, GetThrowCaller<IN,SpinnerValue> caller){
         callers[index] = (GetThrowCaller<Object, SpinnerValue>) caller;
+        return this;
     }
 
     public void start(){

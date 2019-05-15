@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: bvroutine_anno">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/bvroutine_apt/libs/bvroutine_anno.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

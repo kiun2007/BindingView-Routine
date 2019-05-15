@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 import kiun.com.bindingdemo.MainApplication;
+import kiun.com.bvroutine.data.QueryBean;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -20,7 +21,7 @@ public class CacheInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
 
-        String token = "ee5c759f97a24cedb646a3c9d5e5eca9";
+        String token = QueryBean.getBaseGuid();
         String persId = token;
 
         Request request = chain.request()

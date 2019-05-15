@@ -4,8 +4,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+
 import java.util.LinkedList;
 import java.util.List;
+
+import kiun.com.bvroutine.R;
 import kiun.com.bvroutine.base.BaseRecyclerAdapter;
 import kiun.com.bvroutine.data.PagerBean;
 import kiun.com.bvroutine.data.QueryBean;
@@ -30,11 +35,17 @@ public class RecyclerListPresenter<T,Q extends QueryBean,Req extends ListRequest
     protected ADA loadAdapter;
     protected ExceptionCatcher catcher;
     int errLayout = 0;
+    protected View footerView;
 
     public RecyclerListPresenter(RecyclerView recyclerView, SwipeRefreshLayout refreshLayout){
         mRecyclerView = recyclerView;
         mRefreshLayout = refreshLayout;
         refreshLayout.setOnRefreshListener(this);
+        setFootViewLayout(R.layout.view_footer);
+    }
+
+    public void setFootViewLayout(int layout){
+        footerView = LayoutInflater.from(mRecyclerView.getContext()).inflate(layout, null);
     }
 
     @Override
@@ -63,6 +74,7 @@ public class RecyclerListPresenter<T,Q extends QueryBean,Req extends ListRequest
 
     @Override
     public void loadMore() {
+
         if(rootRequest instanceof PagerBean){
             if (!((PagerBean) rootRequest).isPageOver()){
                 ((PagerBean) rootRequest).addPage();
@@ -70,6 +82,8 @@ public class RecyclerListPresenter<T,Q extends QueryBean,Req extends ListRequest
                 return;
             }
         }
+        loadAdapter.addFooterView(footerView);
+        mRefreshLayout.setEnabled(false);
         presenter.addRequest(()->mRequestView.requestPager(presenter, rootRequest), this::onDataComplete, catcher::onCatch);
     }
 
@@ -137,10 +151,13 @@ public class RecyclerListPresenter<T,Q extends QueryBean,Req extends ListRequest
         if (v != null){
             loadAdapter.add(v);
         }
+        loadAdapter.removeFooter();
+        mRefreshLayout.setEnabled(true);
         mRefreshLayout.setRefreshing(false);
     }
 
     protected void onError(ExceptionCatcher catcher){
+        mRefreshLayout.setEnabled(true);
         mRefreshLayout.setRefreshing(false);
     }
 

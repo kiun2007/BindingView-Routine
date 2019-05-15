@@ -9,6 +9,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
     }
 
     buildTypes {
@@ -46,7 +47,10 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:2.1.0"
     implementation "com.google.code.gson:gson:2.7"
 
+    compile 'com.google.auto.service:auto-service:1.0-rc2'
+    compile 'com.squareup:javapoet:1.9.0'
     implementation project(':bvroutine')
+    annotationProcessor files('libs/bvroutine_apt.jar')
 
     implementation 'com.aliyun.ams:alicloud-android-hotfix:3.2.8'
 }

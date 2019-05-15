@@ -2,9 +2,13 @@ package kiun.com.bvroutine.base;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.LinkedList;
@@ -39,6 +43,8 @@ public abstract class BaseRecyclerAdapter<T, L extends ListViewPresenter> extend
     }
 
     public abstract List showList();
+    public void addFooterView(View footerView) {}
+    public void removeFooter(){}
 
     @Override
     public void add(List<T> list) {
@@ -68,8 +74,7 @@ public abstract class BaseRecyclerAdapter<T, L extends ListViewPresenter> extend
 
     @Override
     public int getItemCount() {
-        if (isError) return 1;
-        if (showList() == null || showList().size() == 0){
+        if (isError || showList() == null || showList().size() == 0){
             return 1;
         }
         return showList().size();
@@ -112,6 +117,7 @@ public abstract class BaseRecyclerAdapter<T, L extends ListViewPresenter> extend
     @Override
     public void clear() {
         listData.clear();
+        notifyDataSetChanged();
     }
 
     @Override
@@ -121,6 +127,11 @@ public abstract class BaseRecyclerAdapter<T, L extends ListViewPresenter> extend
 
     @Override
     public void notifySet() {
-        notifyDataSetChanged();
+        new Handler(Looper.getMainLooper()){
+            @Override
+            public void dispatchMessage(Message msg) {
+                notifyDataSetChanged();
+            }
+        }.sendEmptyMessage(0);
     }
 }
