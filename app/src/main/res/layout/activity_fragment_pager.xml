@@ -43,20 +43,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </kiun.com.bvroutine.views.DrawLinearLayout>
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewPager"
+        <kiun.com.bvroutine.views.HeadViewPager
+            android:id="@+id/pagerView"
+            app:adapter="@{adapter}"
+            app:handler="@{handler}"
+            app:itemWidth="80dp"
+            app:itemPadding="6dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-        <!--<kiun.com.bvroutine.views.HeadViewPager-->
-            <!--android:id="@+id/pagerView"-->
-            <!--app:adapter="@{adapter}"-->
-            <!--app:handler="@{handler}"-->
-            <!--app:titles="督查中,未督查,新问题"-->
-            <!--app:itemWidth="80dp"-->
-            <!--app:itemPadding="6dp"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent">-->
+            android:layout_height="match_parent">
 
-        <!--</kiun.com.bvroutine.views.HeadViewPager>-->
+        </kiun.com.bvroutine.views.HeadViewPager>
     </LinearLayout>
 </layout>

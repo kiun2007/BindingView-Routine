@@ -8,18 +8,24 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:name=".SophixStubApplication"
-        android:allowBackup="true"
+        android:name=".MainApplication"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        android:theme="@style/AppTheme">
+        <meta-data
+            android:name="com.taobao.android.hotfix.IDSECRET"
+            android:value="27433257" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.APPSECRET"
+            android:value="9ed5e2871eac03998394add7d42eac6a" />
+        <meta-data
+            android:name="com.taobao.android.hotfix.RSASECRET"
+            android:value="MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDb82mP3AF5rAfdv/8wwZBAxfHxE5hgbkoQxJ9MoDDBCS9h/GLGlhVCWtjD0mT7YQ4XTZv9+3DjVJCgc5W+dWvOSRQBaO/eiDLteWiYSXR8to7I/sylzbmmQryB8Wpi/BfZaU1wVAFlgVWS7jc2bMfsagKomCTRYB9qflnrUXL+VGGlCDIB+mCiJyeupxSi9OQHp7Un2bWX7S/cw5Z9a+UCwWjqmW95bv52nCq7um2PeCM8poe/GMOFVl50ov2K/CIylUJp7sqVJ9TcZBHgOIk9rX/OoQ8rTBqyC1OiyseqK5kPJisyL5YJtvVO+T4S8Kr12DkEldJ+CcjTd21+EbiVAgMBAAECggEAFYCzdjv07PczgatOgG678okngQEAaZT+qqr+Q9h5S7XhKvwoj++GPolxHZvJAYZYgVC2Clt1itPum7ERF6CVHIKqcQTYRnIcQHkZD6JGwBZ82QuH6EG3f5iQo0d9thWdI0UXK/8ab9j4C7g8L5bs6KDoh6DwIIP8LkYR9l5tFo3s5AR+SW7+TVgn5Z8RcPFqN9GSNMWxlctG1UIWz4hDAq+HhwgiiuKJC+afBxJcrHh3jS9YJMEwYhX5EcJwEdNx1LnQN6iefwIDrTw9TELAL3q5aRxW3nMu2XTx/NlwIcYg8OnUAW0JyyfqFtjXjv3DH1cfE24KJH6pi041ogxKQQKBgQDu6ZBt+f8gDVZ7vnOp6XsJeHL3tzTNr7/c8toFO/92UAOVhRH3qZTgfAe8lWK0i5pB86Ya/EE0UvIX9ADiWsq5q0fTcItDCodbE/Brt1TdP/VTkfGTdmJc6HClazNz1Wb6631z0cqh7TorG0n6EzqVitEOC95nkZMRTBzO0y2ScQKBgQDrrqqeMgtTRHHYf5r7KoSisPADoSe1YfgoLddYNo10X8VKASHqhpGt2BIiuXxz5bvqkaV4n8l9PtgFyLGyLC1EPcwOqR+EhQ1y+v/0S1RpIpAPootInGrytDxdrGgFG9cCTtxsSdt0hediKkwyn+IcaAWDVTXvt5HECU08pPsSZQKBgEgAXgW27RuUyXabrDIN6oWtJkDflutSRyloiyo+rbvTW3EpXIPeOL76wj4ka03sML4llu7VDTWetdVgNRACuswAAbKIXYAD4U0ikjd0VgAj8WSRPFPrvrMvXhuMVkJXkySV6gYIuN/aJcit/bp/Jw3Ae0aXbxyZc9Antxrh6/8RAoGASvvYdtpvNf/ZxMrckTq21lg7FLyKOLBB1u62y+8XVEZAK8pucwJ7iPbs1jVzfiBCiF/saJNV9M4wxq5SsuBRSpvqt2NhjrUSUVnAY4YwBf8kHIVXkTOK50smxZrbwXxZDPfwM1fQRaNwuY/BjH3H38fMsTtEHM+nxdo7w6at5u0CgYATjiAvTJ3s/XuqBUWnuGcj5CZps/EeWHutOmmzK9YrRnG4cKiQQTM3tXP3wajVAcce/X36kVZBw8rxWfYdzRkslhIjjdnLRQcb2VuzRqSZHMVQPhHxMMi1IQq2b81+lmKvSsNoYOF3LxONGjnednPo8pcBPfuN2A379OgiIp5R/w==" />
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
         <activity android:name=".ItemActivity">
 
@@ -30,6 +36,16 @@
         <activity android:name=".PagerActivity">
 
         </activity>
-    </application>
+        <activity android:name=".AnimActivity">
 
+        </activity>
+        <activity android:name=".TestActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="kiun.com.bvroutine.base.VueViewActivity"/>
+
+    </application>
 </manifest>

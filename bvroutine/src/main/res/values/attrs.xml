@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="progressBarColor" format="color"/>
     <attr name="paintColor" format="color" />
+    <attr name="loadMore" format="string" />
 
     <declare-styleable name="NavigatorBar">
         <attr name="barTitle" format="string"/>
@@ -10,6 +12,7 @@
             <enum name="transparentBar" value="1"/>
             <enum name="transparentBlack" value="2"/>
         </attr>
+        <attr name="barWithStatus" format="boolean" />
         <attr name="barLeftTitle" format="string"/>
         <attr name="barRightImage" format="reference"/>
         <attr name="barRightTitle" format="string"/>

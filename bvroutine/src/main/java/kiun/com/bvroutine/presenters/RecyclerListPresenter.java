@@ -148,12 +148,23 @@ public class RecyclerListPresenter<T,Q extends QueryBean,Req extends ListRequest
     }
 
     protected void onDataComplete(List<T> v){
+
+        PagerBean pager = rootRequest instanceof PagerBean ? (PagerBean) rootRequest : null;
+        if (pager != null){
+            if (v != null) {
+                pager.real(); //真实页码.
+            }else{
+                pager.rollbackPage(); //发生异常回滚页码.
+            }
+        }
+
         if (v != null){
             loadAdapter.add(v);
         }
         loadAdapter.removeFooter();
         mRefreshLayout.setEnabled(true);
         mRefreshLayout.setRefreshing(false);
+        mRequestView.loadComplete(this);
     }
 
     protected void onError(ExceptionCatcher catcher){

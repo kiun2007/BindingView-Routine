@@ -22,7 +22,7 @@ public abstract class NavigationBaseFragment<T extends ViewDataBinding> extends 
     ActionBarItem actionBarItem;
     private ActionBarHandler actionBarHandler;
     boolean isRoot = false;
-    private FragmentNavigationHandler navigationHandler;
+    protected FragmentNavigationHandler navigationHandler;
 
     public Class<? extends BVBaseFragment>[] getNextFragments(){
         return null;

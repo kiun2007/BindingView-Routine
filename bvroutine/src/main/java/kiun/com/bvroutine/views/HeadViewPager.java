@@ -156,6 +156,7 @@ public class HeadViewPager extends LinearLayout implements View.OnClickListener,
     public void initAdapter(PagerFragmentAdapter adapter){
         if (dataBinding != null && adapter != null){
             dataBinding.pagerContent.setAdapter(adapter);
+            dataBinding.pagerContent.setOffscreenPageLimit(adapter.getLimitPager());
             adapter.setHandlerGeter(this);
             int current = dataBinding.pagerContent.getCurrentItem();
             if (allTextView.size() > 0){

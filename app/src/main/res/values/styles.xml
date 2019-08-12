@@ -1,11 +1,19 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="BVAppCompat">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <!--<item name="progressBarColor">#0F0</item>-->
+        <!--<item name="loadMore">努力加载中...</item>-->
     </style>
 
+    <style name="CheckButtonStyle" parent="android:Widget.CompoundButton.CheckBox">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#FF6600</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
 </resources>

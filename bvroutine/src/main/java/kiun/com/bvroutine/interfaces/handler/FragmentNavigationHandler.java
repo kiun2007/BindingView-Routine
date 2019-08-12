@@ -1,5 +1,7 @@
 package kiun.com.bvroutine.interfaces.handler;
 
+import android.os.Parcelable;
+
 import kiun.com.bvroutine.base.BVBaseFragment;
 import kiun.com.bvroutine.base.BaseHandler;
 import kiun.com.bvroutine.base.NavigationBaseFragment;
@@ -19,13 +21,17 @@ public class FragmentNavigationHandler extends BaseHandler {
     }
 
     public void navigationTo(int toIndex){
+        navigationTo(toIndex,null);
+    }
+
+    public void navigationTo(int toIndex, Parcelable value){
 
         Class<? extends NavigationBaseFragment>[] fragmentClzs;
         if (current != null && (fragmentClzs = current.getNextFragments()) != null){
             if (toIndex < 0 || toIndex >= fragmentClzs.length){
                 return;
             }
-            naviPresenter.gotoNavi(fragmentClzs[toIndex], null);
+            naviPresenter.gotoNavi(fragmentClzs[toIndex], value);
         }
     }
 }

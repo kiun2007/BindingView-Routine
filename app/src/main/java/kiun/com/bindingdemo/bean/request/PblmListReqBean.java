@@ -10,8 +10,6 @@ public class PblmListReqBean extends PagerBean {
     private String inspPblmName;
     public ObservableField<String> villType = new ObservableField<>();
 
-    public static int a = 0;
-
     public String getInspPblmName() {
         return inspPblmName;
     }

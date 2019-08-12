@@ -24,6 +24,8 @@ public class DemoFragment extends NavigationBaseFragment<FragmentMainBinding> im
     public void initView() {
         int a = 0;
 //        pagerHandler.setTitle("1111", 0);
+
+        getBarItem().setBarNoBack(false);
     }
 
     @Override

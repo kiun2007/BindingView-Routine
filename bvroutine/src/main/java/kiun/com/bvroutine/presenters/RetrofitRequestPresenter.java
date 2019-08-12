@@ -77,6 +77,7 @@ public class RetrofitRequestPresenter implements RequestBindingPresenter, Loader
         if(warp instanceof ListWarp){
             if(pagerBean != null){
                 pagerBean.setPages(((ListWarp) warp).getPages());
+                pagerBean.setTotal(((ListWarp) warp).getTotal());
             }
             return ((ListWarp) warp).getList();
         }

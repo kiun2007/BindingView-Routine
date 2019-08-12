@@ -10,10 +10,16 @@ public class ActionBarItem{
     public ObservableField<Boolean> barNoBack = new ObservableField<>();
     public ObservableField<String> backTitle = new ObservableField<>();
     public ObservableField<String> rightItemTitle = new ObservableField<>();
+    public ObservableField<Boolean> withStatusBar = new ObservableField<>(true);
+
     private ActionBarHandler handler = null;
 
     public void setBarNoBack(boolean barNoBack) {
         this.barNoBack.set(barNoBack);
+    }
+
+    public void setWithStatusBar(boolean withStatusBar){
+        this.withStatusBar.set(withStatusBar);
     }
 
     public void setTitle(String title) {

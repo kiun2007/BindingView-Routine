@@ -15,4 +15,9 @@
         <item name="android:windowEnterAnimation">@anim/dialog_right_enter</item>
         <item name="android:windowExitAnimation">@anim/dialog_right_exit</item>
     </style>
+
+    <style name="BVAppCompat" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="progressBarColor">#3699FF</item>
+        <item name="loadMore">努力加载中...</item>
+    </style>
 </resources>

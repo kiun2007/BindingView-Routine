@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_content"
+    android:orientation="vertical"
+    android:background="#FFF"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:text="开始"
+        android:onClick="onClick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <kiun.com.bindingdemo.anim.Bing
+        android:background="#FF0"
+        android:id="@+id/animBing"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </kiun.com.bindingdemo.anim.Bing>
+</LinearLayout>

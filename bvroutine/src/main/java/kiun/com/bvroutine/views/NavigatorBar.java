@@ -108,6 +108,8 @@ public class NavigatorBar extends LinearLayout {
             titleTextView.setText(title);
         }
 
+        barItem.setWithStatusBar(array.getBoolean(R.styleable.NavigatorBar_barWithStatus, true));
+
         int resId = array.getResourceId(R.styleable.NavigatorBar_barRightImage, -1);
 
         if (resId != -1) {

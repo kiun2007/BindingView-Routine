@@ -36,9 +36,9 @@ public class PagerActivity extends RequestBVActivity<ActivityFragmentPagerBindin
 
     @Override
     public void initView() {
-//        mViewBinding.setAdapter(adapter);
+        mViewBinding.setAdapter(adapter);
         mViewBinding.setHandler(pagerHandler = new PagerHandler(null, "未督查","督查中"));
-//        mViewBinding.pagerView.setPagerCaller(this::onPagerSelected);
+        mViewBinding.pagerView.setPagerCaller(this::onPagerSelected);
     }
 
     private void onDemoCreate(DemoFragment fragment){

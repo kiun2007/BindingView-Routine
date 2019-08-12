@@ -1,5 +1,6 @@
 package kiun.com.bvroutine.interfaces.presenter;
 
+import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
 import kiun.com.bvroutine.base.BVBaseFragment;
 import kiun.com.bvroutine.base.NavigationBaseFragment;
@@ -23,11 +24,18 @@ public interface NavigationPresenter {
      * @param clz
      * @param value
      */
-    void setRoot(Class<? extends NavigationBaseFragment> clz, BaseBean value);
+    void setRoot(Class<? extends NavigationBaseFragment> clz, Parcelable value);
+
     /**
      * 返回上个界面.
      */
     void backNavi();
+
+    /**
+     * 立刻返回到上个页面,如果已经是第一个页面返回false.
+     * @return
+     */
+    boolean backNaviImmediate();
 
     /**
      * 返回上个界面.
@@ -43,7 +51,7 @@ public interface NavigationPresenter {
      * 跳到指定的界面.
      * @param clz 页面类.
      */
-    void gotoNavi(Class<? extends NavigationBaseFragment> clz, BaseBean value);
+    void gotoNavi(Class<? extends NavigationBaseFragment> clz, Parcelable value);
 
     /**
      * 跳转到下一个页面.

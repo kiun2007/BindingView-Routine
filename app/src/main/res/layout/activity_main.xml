@@ -26,20 +26,24 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
         <Spinner
+            android:visibility="visible"
+            android:spinnerMode="dropdown"
+            android:overlapAnchor="false"
             android:id="@+id/firstSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </Spinner>
         <Spinner
+            android:visibility="visible"
             android:id="@+id/secondSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </Spinner>
         <android.support.v4.widget.SwipeRefreshLayout
+            android:visibility="gone"
             android:id="@+id/main_refresh"
-
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp">
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/main_recyclerView"
                 android:layout_width="match_parent"

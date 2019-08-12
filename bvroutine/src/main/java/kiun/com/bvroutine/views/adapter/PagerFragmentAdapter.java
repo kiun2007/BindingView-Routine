@@ -20,6 +20,27 @@ public class PagerFragmentAdapter extends FragmentPagerAdapter {
     private PagerHandlerGeter geter;
     private Map<Class<? extends Fragment>,SetCaller<? extends Fragment>> listeners = new HashMap<>();
     private Fragment[] allFragments;
+    private int limitPager = 1;
+
+    public PagerFragmentAdapter(FragmentManager fm, int limitPager, Class<? extends Fragment>... fragments) {
+        super(fm);
+        this.limitPager = limitPager;
+        fm.registerFragmentLifecycleCallbacks(new FragmentLifecycle(), false);
+        fragmentClz = fragments;
+        allFragments = new Fragment[fragments.length];
+    }
+
+    public PagerFragmentAdapter(FragmentManager fm, Class<? extends Fragment>... fragments) {
+        this(fm,1,fragments);
+    }
+
+    public int getLimitPager() {
+        return limitPager;
+    }
+
+    public void setLimitPager(int limitPager) {
+        this.limitPager = limitPager;
+    }
 
     private class FragmentLifecycle extends FragmentManager.FragmentLifecycleCallbacks {
         @Override
@@ -38,13 +59,6 @@ public class PagerFragmentAdapter extends FragmentPagerAdapter {
                 }
             }
         }
-    }
-
-    public PagerFragmentAdapter(FragmentManager fm, Class<? extends Fragment>... fragments) {
-        super(fm);
-        fm.registerFragmentLifecycleCallbacks(new FragmentLifecycle(), false);
-        fragmentClz = fragments;
-        allFragments = new Fragment[fragments.length];
     }
 
     public void initArguments(String ...args){

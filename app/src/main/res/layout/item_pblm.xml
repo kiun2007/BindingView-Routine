@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
-        <variable name="item" type="kiun.com.bindingdemo.bean.PblmBean" />
+        <variable name="item" type="kiun.com.bindingdemo.bean.RsvrRgstrBean" />
         <variable name="handler" type="kiun.com.bvroutine.handlers.ListHandler" />
     </data>
     <LinearLayout
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp">
         <TextView
-            android:text="@{item.inspPblmName}"
+            android:text="@{item.toString()}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

@@ -10,6 +10,10 @@ android {
         versionName "1.1"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters "armeabi-v7a", "armeabi", "x86"
+        }
     }
 
     buildTypes {
@@ -21,6 +25,12 @@ android {
 
     dataBinding {
         enabled true
+    }
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
     }
 
     compileOptions {
@@ -45,4 +55,7 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:3.4.1"
     implementation "com.squareup.okhttp3:logging-interceptor:3.4.1"
     implementation "com.squareup.retrofit2:retrofit:2.1.0"
+
+    compile 'com.alibaba:fastjson:1.1.46.android'
+    compile files('libs/weex_extra-release.aar')
 }

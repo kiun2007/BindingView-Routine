@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="items" type="java.util.List&lt;kiun.com.bindingdemo.warp.CheckBoxGroup.CheckItem>"/>
+    </data>
+    <kiun.com.bindingdemo.warp.WebLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/fragment_content"
+        android:orientation="vertical"
+        android:background="#FFF"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- TODO: Update blank fragment layout -->
+        <Button
+            android:text="HTML5_0"
+            android:onClick="onClick"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <Button
+            android:text="HTML5_1"
+            android:onClick="onClick"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <Button
+            android:text="HTML5_2"
+            android:onClick="onClick"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </kiun.com.bindingdemo.warp.WebLayout>
+</layout>

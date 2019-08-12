@@ -91,6 +91,10 @@ public class PblmBean extends BaseBean {
     private String srcDesc;
     private String code;
 
+    public PblmBean(){
+
+    }
+
     protected PblmBean(Parcel in) {
         pblmsTypeId = in.readString();
         regid = in.readString();

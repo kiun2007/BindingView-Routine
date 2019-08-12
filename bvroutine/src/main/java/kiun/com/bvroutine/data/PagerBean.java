@@ -8,6 +8,10 @@ public class PagerBean<T> extends QueryBean<T>{
 
     @IgnoreParam
     private int pages = -1;
+
+    @IgnoreParam
+    private int total = -1;
+
     @IgnoreParam
     private int realPageNum = 1;
 
@@ -65,5 +69,13 @@ public class PagerBean<T> extends QueryBean<T>{
      */
     public boolean isPageOver(){
         return realPageNum >= pages;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
     }
 }

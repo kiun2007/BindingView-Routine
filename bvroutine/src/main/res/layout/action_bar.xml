@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <kiun.com.bvroutine.views.layout.StatusLayout
+            android:visibility="@{barItem.withStatusBar?View.VISIBLE:View.GONE}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </kiun.com.bvroutine.views.layout.StatusLayout>

@@ -35,4 +35,9 @@ public abstract class NavigationBaseActivity<T extends ViewDataBinding> extends 
     public void configAnimation(int enter, int exit, int popEnter, int popExit){
         getNavigation().configAnimation(enter, exit, popEnter, popExit);
     }
+
+    @Override
+    public void backIsRoot() {
+        finish();
+    }
 }

@@ -36,6 +36,11 @@ public class NetListBeanWrapper<T> extends NetBaseWrapper implements ListWarp<T>
         return data == null ? 0 : data.getPages();
     }
 
+    @Override
+    public int getTotal() {
+        return data == null ? 0 : data.getTotal();
+    }
+
     public void setData(DataListWrapper<T> data) {
         this.data = data;
     }
@@ -51,6 +56,8 @@ public class NetListBeanWrapper<T> extends NetBaseWrapper implements ListWarp<T>
         }
 
         private int pages;
+
+        private int total;
 
         private List<S> list;
 
@@ -68,6 +75,10 @@ public class NetListBeanWrapper<T> extends NetBaseWrapper implements ListWarp<T>
 
         public void setPages(int pages) {
             this.pages = pages;
+        }
+
+        public int getTotal() {
+            return total;
         }
     }
 

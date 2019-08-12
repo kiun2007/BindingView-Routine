@@ -1,6 +1,7 @@
 package kiun.com.bvroutine.presenters;
 
 import android.annotation.SuppressLint;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -8,6 +9,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
+
+import java.util.List;
+
 import kiun.com.bvroutine.base.NavigationBaseFragment;
 import kiun.com.bvroutine.data.BaseBean;
 import kiun.com.bvroutine.handlers.ActionBarHandler;
@@ -22,13 +26,13 @@ public class NormalNavigationPresenter implements NavigationPresenter, FragmentM
     int enterAnimation = -1, exitAnimation = -1, popEnterAnimation = -1, popExitAnimation = -1;
     int contentViewId;
     FragmentManager mFragmentManager;
+    NavigationView view;
     boolean replace = false;
     Class<? extends NavigationBaseFragment> rootFragment = null;
     FragmentNavigationHandler handler = new FragmentNavigationHandler(this);
     NavigationActivityHandler barHandler = new NavigationActivityHandler();
 
     public NormalNavigationPresenter(){}
-
     public NormalNavigationPresenter(boolean replace){
         this.replace = replace;
     }
@@ -47,6 +51,11 @@ public class NormalNavigationPresenter implements NavigationPresenter, FragmentM
 
     @Override
     public void onBackStackChanged() {
+        List<Fragment> fragments = mFragmentManager.getFragments();
+        Fragment fragment = fragments.get(fragments.size()-1);
+        if (fragment instanceof NavigationBaseFragment){
+            handler.setCurrent((NavigationBaseFragment) fragment);
+        }
     }
 
     public class NavigationActivityHandler extends ActionBarHandler {
@@ -61,6 +70,7 @@ public class NormalNavigationPresenter implements NavigationPresenter, FragmentM
 
     @Override
     public void initNavigation(@NonNull NavigationView view, FragmentManager fragmentManager) {
+        this.view = view;
         contentViewId = view.getContentViewId();
         mFragmentManager = fragmentManager;
         mFragmentManager.registerFragmentLifecycleCallbacks(lifecycleCallbacks, false);
@@ -68,13 +78,20 @@ public class NormalNavigationPresenter implements NavigationPresenter, FragmentM
     }
 
     @Override
-    public void setRoot(Class<? extends NavigationBaseFragment> clz, BaseBean value) {
+    public void setRoot(Class<? extends NavigationBaseFragment> clz, Parcelable value) {
         commitFragment(clz, value, true);
     }
 
     @Override
     public void backNavi() {
-        mFragmentManager.popBackStack();
+        if (!backNaviImmediate()){
+            view.backIsRoot();
+        }
+    }
+
+    @Override
+    public boolean backNaviImmediate() {
+        return mFragmentManager.popBackStackImmediate();
     }
 
     @Override
@@ -89,7 +106,7 @@ public class NormalNavigationPresenter implements NavigationPresenter, FragmentM
         }
     }
 
-    private void commitFragment(Class<? extends NavigationBaseFragment> clz, BaseBean value, boolean isRoot){
+    private void commitFragment(Class<? extends NavigationBaseFragment> clz, Parcelable value, boolean isRoot){
 
         if (isRoot && mFragmentManager.getFragments().size() > 0) return;
 
@@ -134,7 +151,7 @@ public class NormalNavigationPresenter implements NavigationPresenter, FragmentM
 
     @SuppressLint("ResourceType")
     @Override
-    public void gotoNavi(Class<? extends NavigationBaseFragment> clz, BaseBean value) {
+    public void gotoNavi(Class<? extends NavigationBaseFragment> clz, Parcelable value) {
         commitFragment(clz, value, false);
     }
 
